@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gafexta.id - Portal Berita</title>
+    <style>
+        body { font-family: sans-serif; background-color: #121212; color: white; margin: 0; padding: 20px; }
+        nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        nav ul { display: flex; list-style: none; gap: 15px; }
+        nav a { color: #bbb; text-decoration: none; font-size: 14px; }
+        
+        .main-wrapper { display: flex; gap: 30px; margin-top: 30px; }
+        
+        /* Kolom 1 */
+        .headline { flex: 2; }
+        .headline img { width: 100%; background: #333; height: 300px; object-fit: cover; }
+        .tag { background: yellow; color: black; padding: 2px 5px; font-weight: bold; font-size: 12px; }
+
+        /* Kolom 2 */
+        .latest { flex: 1.5; }
+        .news-item { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .news-item img { width: 80px; height: 80px; background: #333; }
+
+        /* Kolom 3 */
+        .popular { flex: 1; border-left: 1px solid #333; padding-left: 20px; }
+        h3 { border-bottom: 2px solid red; display: inline-block; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo"><strong>Gafexta</strong><span style="color: red;">.id</span></div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Politik</a></li>
+                <li><a href="#">Bisnis</a></li>
+                <li><a href="#">Teknologi</a></li>
+                <li><a href="#">Hiburan</a></li>
+            </ul>
+            <div>Profile</div>
+        </nav>
+    </header>
+
+    <div class="main-wrapper">
+        <section class="headline">
+           <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80" alt="Legal Gavel" style="width: 100%; height: 300px; object-fit: cover;">
+    
+            <p><span class="tag">HEADLINE UTAMA</span></p>
+    
+            <h2>Mahasiswa FH UI Raih Prestasi Internasional dalam Kompetisi Moot Court di Den Haag</h2>
+    
+            <p style="color: #bbb; font-size: 14px; line-height: 1.6;">
+                Delegasi Fakultas Hukum Universitas Indonesia kembali mengharumkan nama bangsa setelah berhasil menyabet gelar juara dalam ajang peradilan semu internasional. Prestasi ini membuktikan kualitas pendidikan hukum di Indonesia mampu bersaing di kancah global...
+            </p>
+        </section>
+
+        <section class="latest">
+            <h3>DAFTAR ARTIKEL TERBARU</h3>
+            
+            <div class="news-item">
+                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=80&h=80" alt="AI News">
+                <div>
+                    <small style="color: gray;">TEKNOLOGI</small>
+                    <p><strong>Perkembangan AI di Tahun 2026 Semakin Pesat</strong></p>
+                    <small>16 April 2026 | Admin</small>
+                </div>
+            </div>
+
+            <div class="news-item">
+                <img src="https://images.pexels.com/photos/6770610/pexels-photo-6770610.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&dpr=1" alt="Bisnis">
+                <div>
+                    <small style="color: gray;">BISNIS</small>
+                    <p><strong>Harga Saham Gafexta Corp Melonjak Tajam</strong></p>
+                    <small>15 April 2026 | Feli</small>
+                </div>
+            </div>
+        </section>
+
+        <aside class="popular">
+            <h3>TERPOPULER</h3>
+            <ol>
+                <li>Tips Belajar Coding untuk Pemula</li>
+                <li>Kuliner Viral di Bekasi Regency</li>
+                <li>Cara Install Spicetify di Spotify Desktop</li>
+                <li>Review Laptop Gaming Harga 5 Jutaan</li>
+            </ol>
+        </aside>
+    </div>
+
+    <footer style="margin-top: 50px; color: gray; font-size: 12px;">
+        &copy; 2026 Gafexta.id - All Rights Reserved
+    </footer>
+
+</body>
+</html>
