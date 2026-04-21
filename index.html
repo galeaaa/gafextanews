@@ -3,95 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gafexta.id - Portal Berita</title>
-    <style>
-        body { font-family: sans-serif; background-color: #121212; color: white; margin: 0; padding: 20px; }
-        nav { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        nav ul { display: flex; list-style: none; gap: 15px; }
-        nav a { color: #bbb; text-decoration: none; font-size: 14px; }
-        
-        .main-wrapper { display: flex; gap: 30px; margin-top: 30px; }
-        
-        /* Kolom 1 */
-        .headline { flex: 2; }
-        .headline img { width: 100%; background: #333; height: 300px; object-fit: cover; }
-        .tag { background: yellow; color: black; padding: 2px 5px; font-weight: bold; font-size: 12px; }
-
-        /* Kolom 2 */
-        .latest { flex: 1.5; }
-        .news-item { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        .news-item img { width: 80px; height: 80px; background: #333; }
-
-        /* Kolom 3 */
-        .popular { flex: 1; border-left: 1px solid #333; padding-left: 20px; }
-        h3 { border-bottom: 2px solid red; display: inline-block; font-size: 16px; }
-    </style>
+    <title>GafextaNews - Portal Berita Terpercaya</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <header>
-        <nav>
-            <div class="logo"><strong>Gafexta</strong><span style="color: red;">.id</span></div>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Politik</a></li>
-                <li><a href="#">Bisnis</a></li>
-                <li><a href="#">Teknologi</a></li>
-                <li><a href="#">Hiburan</a></li>
-            </ul>
-            <div>Profile</div>
-        </nav>
+        <div class="top-nav">
+            <div class="logo-area">
+                <a href="index.html">
+                <img src="assets/Logo.jpg" alt="GafextaNews Logo" style="height: 60px; width: auto; object-fit: contain;">
+            </a>
+            </div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">Politik</a>
+                <a href="#">Bisnis</a>
+                <a href="#">Teknologi</a>
+                <a href="#">Budaya</a>
+                <a href="#">Hiburan</a>
+            </nav>
+            <div class="search-profile">
+                <input type="text" id="search-input" placeholder="Cari berita...">
+                <i class="fas fa-user-circle"></i> Profile
+            </div>
+        </div>
     </header>
 
-    <div class="main-wrapper">
-        <section class="headline">
-           <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80" alt="Legal Gavel" style="width: 100%; height: 300px; object-fit: cover;">
-    
-            <p><span class="tag">HEADLINE UTAMA</span></p>
-    
-            <h2>Mahasiswa FH UI Raih Prestasi Internasional dalam Kompetisi Moot Court di Den Haag</h2>
-    
-            <p style="color: #bbb; font-size: 14px; line-height: 1.6;">
-                Delegasi Fakultas Hukum Universitas Indonesia kembali mengharumkan nama bangsa setelah berhasil menyabet gelar juara dalam ajang peradilan semu internasional. Prestasi ini membuktikan kualitas pendidikan hukum di Indonesia mampu bersaing di kancah global...
-            </p>
-        </section>
-
-        <section class="latest">
-            <h3>DAFTAR ARTIKEL TERBARU</h3>
+    <main class="container">
+        <section class="main-content">
+            <div id="headline-container">
+                <div class="loading">Memuat Berita Utama...</div>
+            </div>
             
-            <div class="news-item">
-                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=80&h=80" alt="AI News">
-                <div>
-                    <small style="color: gray;">TEKNOLOGI</small>
-                    <p><strong>Perkembangan AI di Tahun 2026 Semakin Pesat</strong></p>
-                    <small>16 April 2026 | Admin</small>
-                </div>
-            </div>
-
-            <div class="news-item">
-                <img src="https://images.pexels.com/photos/6770610/pexels-photo-6770610.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&dpr=1" alt="Bisnis">
-                <div>
-                    <small style="color: gray;">BISNIS</small>
-                    <p><strong>Harga Saham Gafexta Corp Melonjak Tajam</strong></p>
-                    <small>15 April 2026 | Feli</small>
-                </div>
+            <div class="trending-section">
+                <h3>TRENDING</h3>
+                <div id="trending-list">
+                    </div>
             </div>
         </section>
 
-        <aside class="popular">
-            <h3>TERPOPULER</h3>
-            <ol>
-                <li>Tips Belajar Coding untuk Pemula</li>
-                <li>Kuliner Viral di Bekasi Regency</li>
-                <li>Cara Install Spicetify di Spotify Desktop</li>
-                <li>Review Laptop Gaming Harga 5 Jutaan</li>
-            </ol>
-        </aside>
-    </div>
+        <section class="latest-articles">
+            <h3>ARTIKEL TERBARU</h3>
+            <div id="latest-news-container">
+                <div class="loading">Memuat daftar artikel...</div>
+            </div>
+        </section>
 
-    <footer style="margin-top: 50px; color: gray; font-size: 12px;">
-        &copy; 2026 Gafexta.id - All Rights Reserved
+        <aside class="sidebar">
+            <div class="popular-section">
+                <h3>TERPOPULER MINGGU INI</h3>
+                <ol id="sidebar-news-container">
+                    </ol>
+            </div>
+            <div class="category-section">
+                <h3>KATEGORI POPULER</h3>
+                <div class="tags">
+                    <span>Politik</span> <span>Lokal</span>
+                    <span>Keuangan</span> <span>Budaya</span>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h4>Navigasi Cepat</h4>
+                <ul>
+                    <li>About</li>
+                    <li>Contact</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Layanan Pembaca</h4>
+                <ul>
+                    <li>Sitemap</li>
+                    <li>FAQ</li>
+                    <li>Newsletter</li>
+                </ul>
+            </div>
+            <div>
+                <h4>Media Sosial</h4>
+                <div class="social-icons">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2026 Gafexta News. Seluruh Hak Cipta Dilindungi.</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
