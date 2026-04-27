@@ -1,0 +1,123 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #880e4f;
+    font-weight: bold;
+    margin-right: 20px;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    color: #e91e63;
+}
+
+/* Kartu Profil */
+.profile-card {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    border-bottom: 5px solid #e91e63; /* Aksen warna sesuai footer kamu */
+}
+
+.profile-image i {
+    font-size: 80px;
+    color: #e91e63;
+    margin-bottom: 20px;
+}
+
+.profile-info {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.info-group {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 5px;
+}
+
+.info-group label {
+    font-size: 12px;
+    color: #777;
+    display: block;
+    text-transform: uppercase;
+}
+
+.info-group p {
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+
+.badge {
+    background: #e91e63;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* Tombol Aksi */
+.profile-actions {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edit-btn, .logout-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.edit-btn {
+    background-color: #e91e63;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #c2185b;
+}
+
+.logout-btn {
+    background-color: transparent;
+    color: #e91e63;
+    border: 1px solid #e91e63;
+}
+
+.logout-btn:hover {
+    background-color: #fce4ec;
+}

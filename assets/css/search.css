@@ -1,0 +1,129 @@
+/* --- Root Container --- */
+.container {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 5%;
+    display: block !important;
+    /* Perbaikan Scroll: Pastikan overflow diizinkan */
+    overflow: visible; 
+    height: auto;
+    min-height: 100vh;
+}
+
+.search-header-text {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    color: #000;
+}
+
+/* --- STYLING HEADLINE GEDE --- */
+#search-headline-container {
+    width: 100%;
+    margin-bottom: 50px;
+    display: block; /* Memastikan headline tetap satu baris penuh di atas */
+}
+
+#search-headline-container .news-card-big {
+    background: #fff;
+    border: 4px solid #000;
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 10px 10px 0px #f8c5ca;
+    cursor: pointer;
+    transition: transform 0.2s;
+    text-align: center;
+}
+
+#search-headline-container .news-card-big:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 13px 13px 0px #ed5858;
+}
+
+#search-headline-container img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border: 4px solid #000;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+#search-headline-container h2 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+/* --- LAYOUT GRID 3 KOLOM --- */
+.latest-articles {
+    width: 100%;
+    /* Memastikan artikel di bawah headline tidak overlap */
+    clear: both;
+    margin-bottom: 50px;
+}
+
+.search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 20px;
+    /* Perbaikan: Biarkan tinggi otomatis agar bisa memanjang ke bawah */
+    height: auto;
+}
+
+.news-card {
+    background: #fff;
+    border: 4px solid #000;
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 8px 8px 0px #f8c5ca;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.news-card:hover {
+    transform: translate(-5px, -5px);
+    box-shadow: 13px 13px 0px #ed5858;
+}
+
+.news-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border: 3px solid #000;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.news-card h4 {
+    margin-bottom: 10px;
+    flex-grow: 0;
+}
+
+.news-card p {
+    flex-grow: 1; /* Supaya teks deskripsi mengisi ruang dan tombol Read More rapi di bawah */
+    margin-bottom: 15px;
+}
+
+/* --- Label "More Articles" (Menyesuaikan HTML kamu) --- */
+.more-articles-label {
+    background: #ed5858; 
+    color: white; 
+    display: inline-block; 
+    padding: 5px 15px; 
+    border: 3px solid #000; 
+    border-radius: 10px; 
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+    .search-results-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .search-results-grid { grid-template-columns: 1fr; }
+    #search-headline-container img { height: 250px; }
+}

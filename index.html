@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GafextaNews - Portal Berita Terpercaya</title>
+    <title>GafextaNews - Your Trusted News Portal</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -13,80 +14,107 @@
         <div class="top-nav">
             <div class="logo-area">
                 <a href="index.html">
-                <img src="assets/Logo.jpg" alt="GafextaNews Logo" style="height: 60px; width: auto; object-fit: contain;">
-            </a>
+                    <img src="assets/img/Logo.jpg" alt="GafextaNews Logo" style="height: 60px; width: auto; object-fit: contain;">
+                </a>
             </div>
             <nav>
-                <a href="#">Home</a>
-                <a href="#">Politik</a>
-                <a href="#">Bisnis</a>
-                <a href="#">Teknologi</a>
-                <a href="#">Budaya</a>
-                <a href="#">Hiburan</a>
+                <a href="index.html">For You</a>
+                <a href="pages/category.html?cat=politics">Politics</a>
+                <a href="pages/category.html?cat=business">Business</a>
+                <a href="pages/category.html?cat=economy">Economy</a>
+                <a href="pages/category.html?cat=technology">Technology</a>
+                <a href="pages/category.html?cat=culture">Culture</a>
+                <a href="pages/category.html?cat=entertainment">Entertainment</a>
+                <a href="pages/category.html?cat=lifestyle">Lifestyle</a>
             </nav>
             <div class="search-profile">
-                <input type="text" id="search-input" placeholder="Cari berita...">
-                <i class="fas fa-user-circle"></i> Profile
+                <form action="pages/search.html" method="GET" class="search-form">
+                    <div class="search-wrapper">
+                        <input type="text" name="q" id="search-input" placeholder="Search news...">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <a href="pages/profile.html" class="profile-link">
+                    <i class="fas fa-user-circle"></i> Profile
+                </a>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <section class="main-content">
-            <div id="headline-container">
-                <div class="loading">Memuat Berita Utama...</div>
+        
+        <section class="headline-section">
+            <div id="headline-container" class="headline-big">
+                <div class="loading">Loading Top Stories...</div>
             </div>
             
             <div class="trending-section">
-                <h3>KOMENTAR</h3>
-                <div id="trending-list">
-                    </div>
+                <h3>COMMENTS</h3>
+                <div id="trending-list" class="netflix-slider"></div>
             </div>
         </section>
 
         <section class="latest-articles">
-            <h3>ARTIKEL TERBARU</h3>
+            <h3>LATEST ARTICLES</h3>
             <div id="latest-news-container">
-                <div class="loading">Memuat daftar artikel...</div>
+                <div class="loading">Loading articles list...</div>
             </div>
         </section>
 
         <aside class="sidebar">
-            <div class="popular-section">
-                <h3>TERPOPULER MINGGU INI</h3>
-                <ol id="sidebar-news-container">
-                    </ol>
-            </div>
-            <div class="category-section">
-                <h3>KATEGORI POPULER</h3>
-                <div class="tags">
-                    <span>Politik</span> <span>Lokal</span>
-                    <span>Keuangan</span> <span>Budaya</span>
-                </div>
+            <div class="popular-section sidebar-box">
+                <h3>MOST POPULAR</h3>
+                <ol id="sidebar-news-container"></ol>
             </div>
         </aside>
+
+        <div class="category-section full-width-category">
+            <h3>POPULAR CATEGORIES</h3>
+            <div class="tags">
+                <span onclick="location.href='pages/category.html?cat=world'">World</span>
+                <span onclick="location.href='pages/category.html?cat=politics'">Politics</span> 
+                <span onclick="location.href='pages/category.html?cat=science'">Science</span>
+                <span onclick="location.href='pages/category.html?cat=environment'">Environment</span>
+                <span onclick="location.href='pages/category.html?cat=health'">Health</span>
+                <span onclick="location.href='pages/category.html?cat=business'">Business</span>
+                <span onclick="location.href='pages/category.html?cat=finance'">Finance</span> 
+                <span onclick="location.href='pages/category.html?cat=culture'">Culture</span>
+                <span onclick="location.href='pages/category.html?cat=tech'">Technology</span>
+                <span onclick="location.href='pages/category.html?cat=crime'">Crime</span>
+                <span onclick="location.href='pages/category.html?cat=lifestyle'">Lifestyle</span>
+                <span onclick="location.href='pages/category.html?cat=law'">Law</span>
+                <span onclick="location.href='pages/category.html?cat=education'">Education</span>
+                <span onclick="location.href='pages/category.html?cat=fashion'">Fashion</span>
+                <span onclick="location.href='pages/category.html?cat=music'">Music</span>
+                <span onclick="location.href='pages/category.html?cat=travel'">Travel</span>
+                <span onclick="location.href='pages/category.html?cat=food'">Food</span>
+                <span onclick="location.href='pages/category.html?cat=sport'">Sport</span>
+            </div>
+        </div>
     </main>
 
     <footer>
         <div class="footer-content">
-            <div>
-                <h4>Navigasi Cepat</h4>
+            <div class="footer-section">
+                <h4>Quick Navigation</h4>
                 <ul>
-                    <li>About</li>
-                    <li>Contact</li>
-                    <li>Privacy Policy</li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
                 </ul>
             </div>
-            <div>
-                <h4>Layanan Pembaca</h4>
+            <div class="footer-section">
+                <h4>Reader Services</h4>
                 <ul>
-                    <li>Sitemap</li>
-                    <li>FAQ</li>
-                    <li>Newsletter</li>
+                    <li><a href="#">Sitemap</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Newsletter</a></li>
                 </ul>
             </div>
-            <div>
-                <h4>Media Sosial</h4>
+            <div class="footer-section">
+                <h4>Social Media</h4>
                 <div class="social-icons">
                     <i class="fab fa-facebook"></i>
                     <i class="fab fa-twitter"></i>
@@ -95,9 +123,9 @@
                 </div>
             </div>
         </div>
-        <p class="copyright">&copy; 2026 Gafexta News. Seluruh Hak Cipta Dilindungi.</p>
+        <p class="copyright">&copy; 2026 Gafexta News. All Rights Reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GafextaNews - News Detail</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="top-nav">
+            <div class="logo">
+                <a href="../index.html">
+                    <img src="../assets/img/Logo.jpg" alt="GafextaNews Logo" style="height: 60px; width: auto; object-fit: contain;">
+                </a>
+            </div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="category.html?cat=politics">Politics</a>
+                <a href="category.html?cat=business">Business</a>
+                <a href="category.html?cat=economy">Economy</a>
+                <a href="category.html?cat=technology">Technology</a>
+                <a href="category.html?cat=culture">Culture</a>
+                <a href="category.html?cat=entertainment">Entertainment</a>
+                <a href="category.html?cat=lifestyle">Lifestyle</a>
+            </nav>
+            <div class="search-profile">
+                <form action="search.html" method="GET" style="display: inline-block; margin: 0;">
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="text" name="q" id="search-input-nav" placeholder="Search news..." style="padding-right: 30px; border-radius: 20px; border: 2px solid #000; padding-left: 10px; height: 35px;">
+                        <button type="submit" style="position: absolute; right: 8px; background: none; border: none; cursor: pointer;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <a href="profile.html" style="text-decoration: none; color: inherit; margin-left: 10px; font-weight: bold; white-space: nowrap;">
+                    <i class="fas fa-user-circle"></i> Profile
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="detail-wrapper">
+        <div class="left-column">
+            <div class="main-content-card">
+                <div class="header-article">
+                    <h1 id="detail-title">Loading News...</h1>
+                    <p class="meta-info" id="detail-meta"></p>
+                </div>
+                
+                <img id="detail-image" class="main-featured-image" src="" alt="Featured Image">
+                
+                <article class="news-body-text" id="detail-content">
+                </article>
+
+                <div class="comment-box">
+                    <h3><i class="fa fa-comments"></i> Comments</h3>
+                    <p>Have an opinion? Please login first to post a comment.</p>
+                    <button class="btn-comment-action" onclick="showLoginModal()" style="background:#ed5858; color:white; border:3px solid #000; padding:12px 25px; border-radius:12px; font-weight:900; cursor:pointer; margin-top: 15px;">Write Comment</button>
+                </div>
+            </div>
+
+            <div class="more-news-grid-container">
+                <h3 class="grid-section-title sidebar-title">Read Also</h3>
+                <div class="news-scroll-grid" id="bottom-news-grid">
+                </div>
+            </div>
+        </div>
+
+        <aside class="detail-sidebar">
+            <div class="sidebar-sticky-box">
+                <h3 class="sidebar-title">Recommended</h3>
+                <div id="recommendation-list">
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Quick Navigation</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Reader Services</h4>
+                <ul>
+                    <li><a href="#">Sitemap</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Newsletter</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Social Media</h4>
+                <div class="social-icons">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2026 Gafexta News. All Rights Reserved.</p>
+    </footer>
+
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-box">
+            <i class="fa fa-lock fa-4x" style="color: #ed5858; margin-bottom:20px;"></i>
+            <h2 style="margin-bottom: 15px; font-weight: 900;">Login Required!</h2>
+            <p style="font-weight: 600;">Commenting features are only available for registered Gafexta News users.</p>
+            <div class="modal-btns" style="margin-top:30px; display:flex; gap:15px; justify-content:center;">
+                <a href="signup.html" class="btn-reg">Sign Up</a>
+                <button onclick="closeModal()" class="btn-close">Maybe Later</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = '6efbc366-a3f6-4b0f-8161-7904491fcfbe';
+        const params = new URLSearchParams(window.location.search);
+        const articleId = params.get('id');
+        
+        // Array untuk menyimpan ID berita yang sudah ditampilkan agar tidak duplikat
+        let displayedArticleIds = [];
+
+        async function fetchContent() {
+            if (!articleId) return;
+            displayedArticleIds.push(articleId); // Masukkan ID berita utama agar tidak muncul lagi di bawah
+
+            try {
+                const detailUrl = `https://content.guardianapis.com/${articleId}?api-key=${API_KEY}&show-fields=thumbnail,body,webPublicationDate`;
+                const resDetail = await fetch(detailUrl);
+                const dataDetail = await resDetail.json();
+                const art = dataDetail.response.content;
+
+                document.getElementById('detail-title').innerText = art.webTitle;
+                document.getElementById('detail-image').src = art.fields?.thumbnail || 'https://via.placeholder.com/800x450';
+                document.getElementById('detail-meta').innerHTML = `<i class="far fa-calendar-alt"></i> Published: ${new Date(art.webPublicationDate).toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'})}`;
+                
+                document.getElementById('detail-content').innerHTML = art.fields?.body || '<p>Failed to load news content.</p>';
+
+                // Jalankan berurutan untuk mengelola duplikasi
+                await fetchRecommendations();
+                await fetchBottomGrid();
+
+            } catch (err) { console.error(err); }
+        }
+
+        async function fetchRecommendations() {
+            // Ambil sedikit lebih banyak (10) untuk berjaga-jaga jika ada yang sama dengan berita utama
+            const recUrl = `https://content.guardianapis.com/search?api-key=${API_KEY}&show-fields=thumbnail&page-size=10`;
+            const resRec = await fetch(recUrl);
+            const dataRec = await resRec.json();
+            const side = document.getElementById('recommendation-list');
+            side.innerHTML = ''; 
+            
+            let count = 0;
+            dataRec.response.results.forEach(item => {
+                if (!displayedArticleIds.includes(item.id) && count < 5) {
+                    displayedArticleIds.push(item.id); // Tandai sudah muncul di rekomendasi
+                    side.innerHTML += `
+                        <a href="detail.html?id=${encodeURIComponent(item.id)}" class="rec-card">
+                            <img src="${item.fields?.thumbnail || 'https://via.placeholder.com/80'}" alt="thumb">
+                            <span>${item.webTitle}</span>
+                        </a>
+                    `;
+                    count++;
+                }
+            });
+        }
+
+        async function fetchBottomGrid() {
+            // Ambil lebih banyak (20) agar setelah difilter tetap cukup 12 berita
+            const gridUrl = `https://content.guardianapis.com/search?api-key=${API_KEY}&show-fields=thumbnail&page-size=20`;
+            const resGrid = await fetch(gridUrl);
+            const dataGrid = await resGrid.json();
+            const gridCont = document.getElementById('bottom-news-grid');
+            gridCont.innerHTML = '';
+
+            let count = 0;
+            dataGrid.response.results.forEach(item => {
+                // Filter: Jika ID belum pernah muncul di atas, tampilkan
+                if (!displayedArticleIds.includes(item.id) && count < 12) {
+                    gridCont.innerHTML += `
+                        <div class="grid-news-card" onclick="location.href='detail.html?id=${encodeURIComponent(item.id)}'">
+                            <img src="${item.fields?.thumbnail || 'https://via.placeholder.com/200x120'}" alt="news">
+                            <h4>${item.webTitle}</h4>
+                        </div>
+                    `;
+                    count++;
+                }
+            });
+        }
+
+        function showLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
+
+        fetchContent();
+    </script>
+</body>
+</html>

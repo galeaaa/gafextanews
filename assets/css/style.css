@@ -1,8 +1,4 @@
-/* STYLE CSS - GAFEXTA NEWS  
-    Warna: Nantucket Breeze (#D8E8F3) & Tomato Red (#D13E4D)
-    Layout: Wide Article Feed & Compact Headline
-*/
-
+/* --- Pengaturan Dasar & Font --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -11,16 +7,17 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #eff9ff; /* Warna Biru Pucat (Nantucket Breeze) */
+    background-color: #eff9ff; 
     color: #000000;
     line-height: 1.5;
+    /* Pastikan scroll aktif */
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
-/* --- HEADER GRADASI --- */
 header {
     background: linear-gradient(135deg, #f7b7bd 0%, #D8E8F3 100%); 
-    padding: 15px 5%;
-    border-bottom: 5px solid #000000;
+    padding: 15px 0;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -32,59 +29,84 @@ header {
     align-items: center;
     max-width: 1400px;
     margin: 0 auto;
+    padding: 0 5%;
 }
 
-.logo-area h1 {
-    font-size: 2rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -1.5px;
+nav {
+    display: flex;
+    flex-wrap: nowrap; /* Mencegah menu turun baris */
 }
 
 nav a {
     text-decoration: none;
-    color: #000000;
+    color: #000;
     font-weight: 700;
-    margin-left: 20px;
+    margin-left: 15px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+nav a:hover { color: #ed5858; }
+
+/* --- PERBAIKAN NAVBAR TURUN --- */
+.search-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-form {
+    margin: 0;
+    display: inline-block; /* Kunci agar tidak merusak layout block */
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .search-profile input {
-    padding: 8px 15px;
+    padding: 8px 35px 8px 15px;
     border: 3px solid #000000;
+    border-radius: 20px;
     outline: none;
+    width: 180px; /* Ukuran tetap agar tidak mendorong nav */
 }
 
-/* --- GRID LAYOUT (Artikel Tengah Lebih Lebar) --- */
-.container {
-    display: grid;
-    grid-template-columns: 1.1fr 1.9fr 1fr; 
-    gap: 25px;
-    padding: 30px 5%;
-    max-width: 1500px;
-    margin: 0 auto;
-
-    align-items: start; /* Semua kotak akan berhenti tepat saat kontennya habis */
+.search-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000;
 }
 
-/* --- KOTAK PUTIH KONSISTEN --- */
-/* Disesuaikan dengan class di HTML: .popular-section & .category-section */
-.headline-box, 
+.profile-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* --- KOTAK KONTEN UTAMA --- */
+.headline-section, 
 .latest-articles, 
 .popular-section,
 .category-section,
-.trending-section { 
+.trending-section,
+.sidebar-box { 
     background: #ffffff;
-    border: 3px solid #000000; 
-    box-shadow: 8px 8px 0px #f8c5ca; /* Shadow warna merah Tomato */
+    border: 4px solid #000000; 
+    box-shadow: 10px 10px 0px #f8c5ca; 
     margin-bottom: 25px;
-    overflow: hidden;
-    padding: 20px;
+    padding: 25px;
+    border-radius: 25px; 
 }
 
-/* Khusus headline-box jika nanti ada gambarnya, hilangkan padding agar nempel */
-#headline-container .headline-box { padding: 0; }
-
-/* Judul Section (Label Hitam) */
 h3 {
     background-color: #ed5858;
     color: #D8E8F3;
@@ -94,102 +116,16 @@ h3 {
     text-transform: uppercase;
     margin-bottom: 15px;
     font-size: 0.9rem;
-
-    border-radius: 12px; /* Semakin besar angkanya, semakin bulat ujungnya */
+    border-radius: 12px;
+    border: 2px solid #000;
 }
 
-/* --- HEADLINE --- */
-.headline-img {
-    width: 100%;
-    height: 230px; 
-    object-fit: cover;
-    border-bottom: 3px solid #000000;
-}
-
-.headline-content {
-    padding: 20px;
-}
-
-.headline-content h2 {
-    font-size: 1.5rem;
-    line-height: 1.2;
-    margin-bottom: 12px;
-}
-
-/* --- ARTIKEL TERBARU (FEED UTAMA) --- */
-.article-item {
-    display: flex;
-    gap: 15px;
-    padding: 15px 0;
-    border-bottom: 2px solid #D8E8F3;
-}
-
-.article-item:last-child { border: none; }
-
-.article-item img {
-    width: 110px;
-    height: 80px;
-    object-fit: cover;
-    border: 2px solid #000000;
-    flex-shrink: 0;
-}
-
-.article-item h4 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #000000;
-}
-
-.article-item .meta {
-    font-size: 0.8rem;
-    color: #666;
-    margin-top: 5px;
-}
-
-/* --- SIDEBAR TERPOPULER (List) --- */
-.popular-section ol {
-    padding-left: 20px;
-}
-
-.popular-section li {
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 10px 0;
-    border-bottom: 1px dashed #ccc;
-}
-
-/* --- PERBAIKAN: KATEGORI JADI KOTAK MERAH (SINKRON DENGAN HTML) --- */
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 5px;
-}
-
-.tags span {
-    background: #f37885; /* Merah Tomato */
-    color: #ffffff;
-    padding: 6px 14px;
-    font-weight: 700;
-    border: 2px solid #000000;
-    font-size: 0.8rem;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.tags span:hover {
-    background: #000000;
-    color: #D8E8F3;
-}
-
-/* --- FOOTER RAMPING --- */
+/* --- FOOTER --- */
 footer {
     background: linear-gradient(135deg, #111111 0%, #f37885 100%);
-    color: #D8E8F3;
-    padding: 40px 5% 20px;
+    color: #ffffff;
+    padding: 50px 5% 30px;
     margin-top: 50px;
-    border-top: 5px solid #000000;
 }
 
 .footer-content {
@@ -201,249 +137,26 @@ footer {
 }
 
 .footer-section h4 {
-    font-size: 1.2rem;
+    color: #D8E8F3;
     margin-bottom: 15px;
-    border-bottom: 2px solid #D8E8F3;
-    display: inline-block;
+    text-transform: uppercase;
+    border-bottom: none; 
+    display: block;
 }
 
-.footer-content ul {
-    list-style: none;
-}
+.footer-section ul { list-style: none; }
 
-.footer-content li {
+.footer-section ul li a {
+    color: #eee;
+    text-decoration: none;
     font-size: 0.9rem;
-    margin-bottom: 8px;
-    opacity: 0.8;
-}
-
-.social-icons i {
-    font-size: 1.5rem;
-    margin-right: 15px;
-    cursor: pointer;
+    line-height: 2.2;
 }
 
 .copyright {
     text-align: center;
-    font-size: 0.85rem;
-    margin-top: 30px;
+    margin-top: 40px;
     padding-top: 20px;
-    border-top: 1px solid rgba(216, 232, 243, 0.2);
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-    .container {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ============================================================
-   HALAMAN DETAIL BERITA (detail.html) 
-   ============================================================ */
-
-/* Container utama artikel detail */
-/* Perbaikan khusus untuk layout halaman detail */
-.container-detail {
-    display: block; /* Matikan grid */
-    width: 90%;
-    max-width: 1000px;
-    margin: 40px auto; /* Ketengahin */
-    padding: 0 20px;
-}
-
-.news-detail-container {
-    width: 100%; /* Pastikan kotak putihnya memenuhi layar */
-    background: #ffffff;
-    padding: 40px;
-    border: 3px solid #000000;
-    box-shadow: 12px 12px 0px #D13E4D; /* Tomato Red sesuai referensi */
-    box-sizing: border-box;
-}
-
-#detail-title {
-    font-size: 2.5rem;
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 20px;
-    display: block; /* Biar judulnya melebar horizontal */
-}
-
-#detail-image {
-    width: 100%; /* Gambar jadi besar */
-    max-height: 500px;
-    object-fit: cover;
-    border: 3px solid #000;
-    margin: 20px 0;
-}
-
-/* Isi Konten Berita */
-.news-content {
-    font-size: 1.2rem;
-    line-height: 1.9;
-    color: #1a1a1a;
-    text-align: left;
-    white-space: pre-line; /* Agar spasi antar paragraf terjaga */
-}
-
-/* Tombol Kembali yang menyesuaikan palet */
-.back-btn {
-    display: inline-block;
-    background-color: #D8E8F3; /* Nantucket Breeze */
-    color: #000;
-    padding: 10px 20px;
-    border: 2px solid #000;
-    font-weight: 800;
-    text-decoration: none;
-    margin-bottom: 20px;
-    transition: 0.2s;
-}
-
-.back-btn:hover {
-    background-color: #D13E4D;
+    border-top: 1px solid rgba(216, 232, 243, 0.1);
     color: #fff;
-    transform: translate(-3px, -3px);
-    box-shadow: 3px 3px 0px #000;
-}
-
-/* Penyesuaian Responsif Layar Kecil */
-@media (max-width: 768px) {
-    .news-detail-container {
-        padding: 20px;
-        margin: 20px 15px;
-        box-shadow: 8px 8px 0px #D13E4D;
-    }
-    
-    #detail-title {
-        font-size: 1.8rem;
-    }
-}
-
-/* --- DETAIL PAGE CUSTOM STYLES --- */
-
-/* Layout Utama: Sidebar di Kanan */
-.main-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 350px; /* Kiri luas untuk berita, kanan untuk sidebar */
-    gap: 30px;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-/* Area Berita Utama (Kiri) */
-.content-area {
-    background: white;
-    padding: 35px;
-    border: 3px solid #000;
-    box-shadow: 8px 8px 0px #f8c5ca;
-    min-height: 500px;
-}
-
-.header-article h1 {
-    font-size: 2.6rem;
-    margin-bottom: 15px;
-    line-height: 1.2;
-    color: #192853;
-}
-
-.main-image {
-    width: 100%;
-    height: auto;
-    border: 3px solid #000;
-    margin: 25px 0;
-    object-fit: cover;
-}
-
-/* Styling Teks Berita agar tidak pusing */
-.news-text {
-    font-size: 1.15rem;
-    line-height: 1.9; /* Memberi jarak antar baris */
-    color: #333;
-}
-
-.news-text p {
-    margin-bottom: 22px; /* Memberi jarak antar paragraf */
-}
-
-/* Sidebar Rekomendasi (Kanan) */
-.sidebar-recommendation {
-    position: sticky;
-    top: 20px;
-}
-
-.sidebar-box {
-    border: 3px solid #000;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 5px 5px 0px #192853;
-}
-
-.rec-item {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 18px;
-    text-decoration: none;
-    color: #192853;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 12px;
-    transition: 0.2s;
-}
-
-.rec-item:hover {
-    transform: translateX(5px);
-}
-
-/* Section Komentar */
-.comment-section {
-    margin-top: 50px;
-    border: 3px solid #000;
-    padding: 25px;
-    background: #fdf2f3;
-}
-
-.btn-comment {
-    background: #D13E4D;
-    color: white;
-    padding: 12px 25px;
-    border: 2px solid #000;
-    cursor: pointer;
-    font-weight: bold;
-    font-family: inherit;
-    transition: 0.3s;
-}
-
-.btn-comment:hover {
-    background: #192853;
-    box-shadow: 4px 4px 0px #000;
-}
-
-/* Pop-up Modal Login */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    z-index: 9999;
-    justify-content: center; 
-    align-items: center;
-}
-
-.modal-box {
-    background: white;
-    padding: 40px;
-    border: 4px solid #000;
-    text-align: center;
-    box-shadow: 12px 12px 0px #f8c5ca;
-    max-width: 400px;
-}
-
-/* Responsif untuk HP */
-@media (max-width: 900px) {
-    .main-wrapper {
-        grid-template-columns: 1fr;
-    }
-    .sidebar-recommendation {
-        position: static;
-    }
 }
