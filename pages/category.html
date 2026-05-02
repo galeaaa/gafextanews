@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category - GafextaNews</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/category.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="top-nav">
+            <div class="logo-area">
+                <a href="../index.html">
+                    <img src="../assets/img/Logo.jpg" alt="GafextaNews Logo" style="height: 60px; width: auto; object-fit: contain;">
+                </a>
+            </div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="category.html?cat=politics">Politics</a>
+                <a href="category.html?cat=business">Business</a>
+                <a href="category.html?cat=economy">Economy</a>
+                <a href="category.html?cat=technology">Technology</a>
+                <a href="category.html?cat=culture">Culture</a>
+                <a href="category.html?cat=entertainment">Entertainment</a>
+                <a href="category.html?cat=lifestyle">Lifestyle</a>
+            </nav>
+            <div class="search-profile">
+                <form action="search.html" method="GET" class="search-form">
+                    <div class="search-wrapper">
+                        <input type="text" name="q" placeholder="Search news...">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                <a href="profile.html" class="profile-link">
+                    <i class="fas fa-user-circle"></i> Profile
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="category-header">
+            <h1 id="main-category-title">Loading Category...</h1>
+        </section>
+
+        <div id="category-sliders-container" class="main-grid-wrapper"></div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Quick Navigation</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Reader Services</h4>
+                <ul>
+                    <li><a href="#">Sitemap</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Newsletter</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Social Media</h4>
+                <div class="social-icons">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2026 Gafexta News. All Rights Reserved.</p>
+    </footer>
+
+    <script src="../assets/js/category.js"></script>
+</body>
+</html>

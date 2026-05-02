@@ -10,7 +10,6 @@ async function fetchNews(query = '') {
     try {
         let url = BASE_URL;
         
-        // Jika ada query (pencarian/kategori), ubah URL endpoint
         if (query) {
             url = `https://content.guardianapis.com/search?q=${encodeURIComponent(query)}&api-key=${API_KEY}&show-fields=thumbnail,trailText&page-size=15`;
         }
@@ -22,7 +21,6 @@ async function fetchNews(query = '') {
             const urlParams = new URLSearchParams(window.location.search);
             const articleId = urlParams.get('id');
 
-            // Cek apakah user sedang di halaman detail atau index
             if (articleId && window.location.pathname.includes('detail.html')) {
                 fetchArticleDetail(articleId);
             } else {
@@ -57,11 +55,12 @@ async function fetchArticleDetail(id) {
             
             if (contentEl) {
                 const rawText = article.fields?.bodyText || '';
+                // Menampilkan paragraf dengan lebih rapi dan aman dari tag HTML yang rusak
                 contentEl.innerHTML = rawText
                     .split('\n')
                     .map(p => p.trim())
                     .filter(p => p.length > 0)
-                    .map(p => `<p style="margin-bottom: 25px; line-height: 1.8; display: block;">${p}</p>`)
+                    .map(p => `<p>${p}</p>`)
                     .join('');
             }
         }
@@ -84,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) {
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                // Mengarahkan ke halaman search dengan query
                 window.location.href = `pages/search.html?q=${encodeURIComponent(searchInput.value)}`;
             }
         });
@@ -96,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function generateDetailURL(article) {
     const articleId = encodeURIComponent(article.id || '');
-    // Di index.html, file detail ada di folder pages/
     return `pages/detail.html?id=${articleId}`;
 }
 

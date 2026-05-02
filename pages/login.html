@@ -3,26 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Login - GafextaNews</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/auth.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    <div class="auth-container">
-        <form id="loginForm" class="auth-card">
-            <h2>Masuk ke Gafexta</h2>
-            <div class="input-group">
-                <label>Email</label>
-                <input type="email" id="email" placeholder="contoh@mail.com" required>
-            </div>
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="password" placeholder="********" required>
-            </div>
-            <button type="submit" class="btn-auth">Login</button>
-            <p>Belum punya akun? <a href="register.html">Daftar di sini</a></p>
-        </form>
-    </div>
 
-    <script src="../js/auth.js"></script>
+<!-- Custom Alert Modal -->
+<div id="customAlert" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <p id="alertMessage"></p>
+        <button onclick="closeAlert()">OK</button>
+    </div>
+</div>
+
+<body class="login-page">
+    <div class="login-wrapper">
+        <!-- Sisi Kiri (Welcome) -->
+        <div class="welcome-box">
+            <h1>Welcome!</h1>
+            <p>Sign in to join the conversation and share your thoughts.</p>
+        </div>
+
+        <!-- Sisi Kanan (Area Form) -->
+        <div class="right-side">
+            <!-- Penanda Sign In / Login di bagian atas -->
+            <div class="auth-header">
+                <h2>Login</h2>
+            </div>
+
+            <!-- Popup Kecil (Inner Card) untuk Form -->
+            <div class="glass-login-card">
+                <form id="loginForm">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-pass" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+                
+                <div class="social-login">
+                    <p>Or login with</p>
+                    <div class="icons">
+                        <i class="fab fa-google"></i>
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                </div>
+                
+                <p class="switch-auth">New here? <a href="register.html">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/js/auth.js"></script>
 </body>
 </html>

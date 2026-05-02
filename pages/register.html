@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - GafextaNews</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<!-- Custom Alert Modal -->
+<div id="customAlert" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <p id="alertMessage"></p>
+        <button onclick="closeAlert()">OK</button>
+    </div>
+</div>
+
+<body class="login-page">
+    <div class="login-wrapper">
+        <!-- Sisi Kiri (Info Register) -->
+        <div class="welcome-box">
+            <h1>Join Us!</h1>
+            <p>Create an account to get the latest news updates and personalize your experience.</p>
+        </div>
+
+        <!-- Sisi Kanan (Area Form) -->
+        <div class="right-side">
+            <!-- Penanda Sign Up di bagian atas -->
+            <div class="auth-header">
+                <h2>Sign Up</h2>
+            </div>
+
+            <!-- Popup Kecil (Inner Card) untuk Form -->
+            <div class="glass-login-card">
+                <form id="registerForm">
+                    <input type="text" id="reg-name" placeholder="Username" required>
+                    <input type="email" id="reg-email" placeholder="Email" required>
+                    <input type="password" id="reg-pass" placeholder="Password" required>
+                    <button type="submit">Sign Up</button>
+                </form>
+                
+                <div class="social-login">
+                    <p>Or register with</p>
+                    <div class="icons">
+                        <i class="fab fa-google"></i>
+                        <i class="fab fa-facebook"></i>
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                </div>
+                
+                <p class="switch-auth">Already have an account? <a href="login.html">Login</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/js/auth.js"></script>
+</body>
+</html>

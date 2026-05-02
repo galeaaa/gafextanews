@@ -160,3 +160,73 @@ footer {
     border-top: 1px solid rgba(216, 232, 243, 0.1);
     color: #fff;
 }
+
+/* --- CSS UNTUK CUSTOM MODAL --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Lebih gelap sesuai detail.css */
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #ffffff;
+    border: 2px solid #000000; /* Border 2px sesuai detail.css */
+    box-shadow: 15px 15px 0px #f8c5ca; /* Shadow pink sesuai detail.css */
+    padding: 40px;
+    border-radius: 25px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-sizing: border-box;
+    animation: modalPop 0.3s ease-out;
+}
+
+.modal-content h2 {
+    font-weight: 900;
+    margin-bottom: 10px;
+    text-transform: none;
+}
+
+.modal-content p {
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 25px;
+}
+
+/* Tombol di dalam Modal */
+.modal-buttons button {
+    font-weight: 900;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 2px solid #000;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-buttons button:first-child {
+    background: #ed5858;
+    color: #fff;
+}
+
+.modal-buttons button:last-child {
+    background: #eee;
+    color: #000;
+}
+
+.modal-buttons button:hover {
+    transform: translateY(-3px);
+    box-shadow: 4px 4px 0px #000;
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

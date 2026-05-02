@@ -1,36 +1,104 @@
-// 1. Fungsi Proses Login
+// Fungsi untuk memunculkan notifikasi custom
+function showAlert(message) {
+    const alertBox = document.getElementById('customAlert');
+    const alertMsg = document.getElementById('alertMessage');
+    if (alertBox && alertMsg) {
+        alertMsg.innerText = message;
+        alertBox.style.display = 'flex';
+    }
+}
+
+// Fungsi untuk menutup notifikasi custom
+function closeAlert() {
+    const alertBox = document.getElementById('customAlert');
+    if (alertBox) {
+        alertBox.style.display = 'none';
+    }
+}
+
+// --- FUNGSI LOGIN ---
 document.getElementById('loginForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-pass').value;
 
-    // Simulasi: Cek email & pass sederhana
-    if(email && password.length >= 5) {
-        const user = {
-            email: email,
-            username: email.split('@')[0], // Ambil nama depan email sebagai username
-            isLoggedIn: true
-        };
+    const db = JSON.parse(localStorage.getItem('gafexta_db')) || [];
+    const userFound = db.find(u => u.email === email && u.password === password);
 
-        // Simpan ke LocalStorage
-        localStorage.setItem('user_gafexta', JSON.stringify(user));
+    if(userFound) {
+        localStorage.setItem('currentUser', JSON.stringify(userFound));
+        showAlert("Login Berhasil!");
         
-        alert("Login Berhasil!");
-        // Arahkan kembali ke halaman sebelumnya (berita tadi)
-        window.location.href = document.referrer || "../index.html";
+        setTimeout(() => {
+            // PERBAIKAN: Cek sessionStorage terlebih dahulu, baru referrer
+            const savedPage = sessionStorage.getItem('lastVisitedPage');
+            const prevPage = document.referrer;
+            
+            if (savedPage) {
+                window.location.href = savedPage;
+                sessionStorage.removeItem('lastVisitedPage');
+            } else if (prevPage && !prevPage.includes('login.html') && !prevPage.includes('register.html') && prevPage !== "") {
+                window.location.href = prevPage;
+            } else {
+                window.location.href = "../index.html";
+            }
+        }, 1500);
     } else {
-        alert("Password minimal 5 karakter!");
+        showAlert("Email atau Password salah!");
     }
 });
 
-// 2. Fungsi Cek Status Login (Panggil di detail.html)
+// --- FUNGSI REGISTER ---
+document.getElementById('registerForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('reg-name').value;
+    const email = document.getElementById('reg-email').value;
+    const password = document.getElementById('reg-pass').value;
+
+    let db = JSON.parse(localStorage.getItem('gafexta_db')) || [];
+
+    // Cek apakah email sudah terdaftar
+    const isExist = db.some(user => user.email === email);
+
+    if(isExist) {
+        showAlert("Email ini sudah terdaftar!");
+    } else {
+        // Simpan user baru
+        const newUser = { username, email, password };
+        db.push(newUser);
+        localStorage.setItem('gafexta_db', JSON.stringify(db));
+        
+        // Langsung set sebagai currentUser agar otomatis login setelah daftar
+        localStorage.setItem('currentUser', JSON.stringify(newUser));
+        
+        showAlert("Akun berhasil dibuat!");
+
+        setTimeout(() => {
+            // PERBAIKAN: Logika pengalihan yang sama untuk Register
+            const savedPage = sessionStorage.getItem('lastVisitedPage');
+            const prevPage = document.referrer;
+            
+            if (savedPage) {
+                window.location.href = savedPage;
+                sessionStorage.removeItem('lastVisitedPage');
+            } else if (prevPage && !prevPage.includes('login.html') && !prevPage.includes('register.html') && prevPage !== "") {
+                window.location.href = prevPage;
+            } else {
+                window.location.href = "../index.html";
+            }
+        }, 1500);
+    }
+});
+
+// Fungsi Cek Status Login
 function isUserLoggedIn() {
-    return localStorage.getItem('user_gafexta') !== null;
+    return localStorage.getItem('currentUser') !== null;
 }
 
-// 3. Fungsi Logout
+// Fungsi Logout
 function logout() {
-    localStorage.removeItem('user_gafexta');
-    location.reload();
+    localStorage.removeItem('currentUser');
+    window.location.href = '../index.html';
 }
