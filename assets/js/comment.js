@@ -1,48 +1,52 @@
-// assets/js/comment.js
+// Fungsi untuk memuat komentar berdasarkan ID artikel
+function loadComments(articleId) {
+    const commentList = document.getElementById('comment-list');
+    if (!commentList) return;
 
-function handleCommentClick() {
-    // Mengecek apakah ada user yang sedang login di localStorage
-    const currentUser = localStorage.getItem('currentUser'); 
+    const allComments = JSON.parse(localStorage.getItem('gafexta_comments')) || {};
+    const currentArticleComments = allComments[articleId] || [];
 
-    if (!currentUser) {
-        // GANTI ALERT LAMA: Menampilkan Custom Modal Pop-up
-        const modal = document.getElementById('loginModal');
-        if (modal) {
-            modal.style.display = 'flex';
-        }
-    } else {
-        // Jika sudah login, arahkan ke detail berita untuk menulis komentar
-        const commentForm = document.getElementById('comment-form');
-        if (commentForm) {
-            commentForm.scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('write-comment-input')?.focus();
-        } else {
-            // Jika diklik dari dashboard, buka berita pertama/terbaru
-            window.location.href = 'pages/detail.html';
-        }
+    if (currentArticleComments.length === 0) {
+        commentList.innerHTML = '<p class="no-comment">Belum ada komentar. Jadilah yang pertama!</p>';
+        return;
     }
+
+    commentList.innerHTML = currentArticleComments.map(c => `
+        <div class="comment-item" style="border-bottom: 1px solid #ddd; margin-bottom: 10px; padding-bottom: 10px;">
+            <strong style="color: #ed5858;">${c.username}</strong>
+            <small style="display: block; color: #777; font-size: 11px;">${c.date}</small>
+            <p style="margin-top: 5px; color: #fff;">${c.text}</p>
+        </div>
+    `).join('');
 }
 
-// Fungsi untuk menutup modal
-function closeModal() {
-    const modal = document.getElementById('loginModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
+// Fungsi untuk mengirim komentar
+function postComment(articleId) {
+    const commentInput = document.getElementById('comment-input');
+    const text = commentInput.value.trim();
 
-// Fungsi tambahan untuk mengaktifkan form jika sudah login
-function enableCommentForm() {
-    const commentArea = document.querySelector('.comment-input-area');
-    if (commentArea) {
-        commentArea.style.display = 'block';
+    if (!text) {
+        showAlert("Komentar tidak boleh kosong!");
+        return;
     }
-}
 
-// Menutup modal jika user klik area luar kotak modal
-window.onclick = function(event) {
-    const modal = document.getElementById('loginModal');
-    if (event.target == modal) {
-        closeModal();
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const allComments = JSON.parse(localStorage.getItem('gafexta_comments')) || {};
+
+    if (!allComments[articleId]) {
+        allComments[articleId] = [];
     }
+
+    const newComment = {
+        username: currentUser.username,
+        text: text,
+        date: new Date().toLocaleString('id-ID')
+    };
+
+    allComments[articleId].unshift(newComment); // Tambah ke paling atas
+    localStorage.setItem('gafexta_comments', JSON.stringify(allComments));
+
+    commentInput.value = ''; // Kosongkan input
+    loadComments(articleId); // Refresh daftar komentar
+    showAlert("Komentar berhasil dikirim!");
 }
