@@ -176,11 +176,29 @@
                 document.getElementById('detail-meta').innerHTML = `<i class="far fa-calendar-alt"></i> Published: ${new Date(art.webPublicationDate).toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'})}`;
                 document.getElementById('detail-content').innerHTML = art.fields?.body || '<p>Failed to load news content.</p>';
 
+                // Simpan ke Histori
+                saveToHistory(art);
+
                 await fetchRecommendations();
                 await fetchBottomGrid();
                 
                 renderCommentSection();
             } catch (err) { console.error(err); }
+        }
+
+        function saveToHistory(art) {
+            let history = JSON.parse(localStorage.getItem('newsHistory')) || [];
+            // Cek jika sudah ada agar tidak duplikat
+            history = history.filter(item => item.id !== art.id);
+            // Tambahkan di awal array
+            history.unshift({
+                id: art.id,
+                title: art.webTitle,
+                thumbnail: art.fields?.thumbnail || 'https://via.placeholder.com/80'
+            });
+            // Batasi 5 histori saja
+            if (history.length > 5) history.pop();
+            localStorage.setItem('newsHistory', JSON.stringify(history));
         }
 
         async function fetchRecommendations() {

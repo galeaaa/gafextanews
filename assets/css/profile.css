@@ -1,123 +1,315 @@
-/* Reset Dasar */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+:root {
+    --bg-gradient: linear-gradient(135deg, #FF99CC 0%, #A1C4FD 100%);
+    --glass: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.3);
 }
 
-body {
-    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-gradient) fixed;
+    overflow-x: hidden;
+}
+
+.bg-grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 30px 30px;
+    z-index: -1;
+}
+
+.glass-bg {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+}
+
+.top-nav-profile {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.btn-back-glass {
+    background: var(--glass);
+    border: 2px solid var(--glass-border);
+    padding: 10px 20px;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-back-glass:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.profile-wrapper {
+    width: 100%;
+    max-width: 550px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px 20px;
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.main-avatar {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    font-size: 60px;
+    font-weight: 900;
+    color: #A1C4FD;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+    position: relative;
+    border: 4px solid white;
 }
 
-.profile-container {
+.main-avatar img {
     width: 100%;
-    max-width: 500px;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+}
+
+.change-photo-text {
+    display: block;
+    margin-top: 15px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.user-info-header h1 {
+    color: white;
+    font-size: 32px;
+    margin: 15px 0 5px;
+    text-transform: capitalize;
+}
+
+.user-info-header p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 40px;
+}
+
+.profile-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.menu-item {
+    padding: 25px 15px;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+.menu-icon { font-size: 28px; color: white; margin-bottom: 10px; }
+.menu-text h3 { margin: 0; color: white; font-size: 16px; }
+.menu-text p { margin: 5px 0 0; color: rgba(255,255,255,0.7); font-size: 12px; }
+
+.full-width {
+    grid-column: span 2;
+    text-align: left;
     padding: 20px;
 }
 
-.profile-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+.mini-list {
+    background: rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 10px;
 }
 
-.back-btn {
-    text-decoration: none;
-    color: #880e4f;
-    font-weight: bold;
-    margin-right: 20px;
-    transition: 0.3s;
-}
-
-.back-btn:hover {
-    color: #e91e63;
-}
-
-/* Kartu Profil */
-.profile-card {
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    text-align: center;
-    border-bottom: 5px solid #e91e63; /* Aksen warna sesuai footer kamu */
-}
-
-.profile-image i {
-    font-size: 80px;
-    color: #e91e63;
-    margin-bottom: 20px;
-}
-
-.profile-info {
-    text-align: left;
-    margin-top: 20px;
-}
-
-.info-group {
-    margin-bottom: 15px;
-    border-bottom: 1px solid #f0f0f0;
-    padding-bottom: 5px;
-}
-
-.info-group label {
-    font-size: 12px;
-    color: #777;
-    display: block;
-    text-transform: uppercase;
-}
-
-.info-group p {
-    font-size: 16px;
-    color: #333;
-    font-weight: 600;
-}
-
-.badge {
-    background: #e91e63;
-    color: white;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-}
-
-/* Tombol Aksi */
-.profile-actions {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.edit-btn, .logout-btn {
-    padding: 12px;
+.logout-btn-glass {
+    background: #ff7675;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.edit-btn {
-    background-color: #e91e63;
+    padding: 18px;
+    border-radius: 20px;
     color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(255, 118, 117, 0.3);
 }
 
-.edit-btn:hover {
-    background-color: #c2185b;
+.popup-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 11000;
 }
 
-.logout-btn {
-    background-color: transparent;
-    color: #e91e63;
-    border: 1px solid #e91e63;
+.popup-content { width: 350px; padding: 30px; text-align: center; color: white; }
+.info-row { margin-bottom: 15px; text-align: left; }
+.info-row label { font-size: 12px; color: rgba(255,255,255,0.6); }
+.info-row p { margin: 5px 0; font-weight: bold; }
+
+.close-popup {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: white;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.logout-btn:hover {
-    background-color: #fce4ec;
+/* --- PERBAIKAN CROP MODAL --- */
+.crop-modal {
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9); 
+    backdrop-filter: blur(10px);
+    z-index: 10000; 
+    align-items: center; 
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.crop-container { 
+    width: 90%; 
+    max-width: 450px; 
+    background: #fff; 
+    padding: 20px; 
+    border-radius: 20px; 
+    text-align: center; 
+    border: 4px solid #000;
+    box-shadow: 10px 10px 0px #000;
+    overflow: hidden;
+}
+
+.crop-wrapper { 
+    width: 100%; 
+    height: 350px; 
+    background: #eee;
+    border: 3px solid #000;
+    margin-bottom: 20px; 
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+#image-to-crop {
+    max-width: 100%;
+    display: block;
+}
+
+.crop-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.crop-btn { 
+    background: #ed5858; 
+    color: white; 
+    border: 3px solid #000; 
+    padding: 10px 20px; 
+    border-radius: 10px; 
+    font-weight: 900; 
+    cursor: pointer; 
+    box-shadow: 4px 4px 0px #000;
+    transition: 0.2s;
+}
+
+.crop-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+.btn-cancel {
+    background: #fff;
+    color: #000;
+    border: 3px solid #000;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #000;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+/* Switch Styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider { background-color: #ed5858; }
+input:checked + .slider:before { transform: translateX(26px); }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }

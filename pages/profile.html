@@ -1,46 +1,225 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Pengguna - Gafexta News</title>
-    <link rel="stylesheet" href="css/profile.css">
+    <title>GafextaNews - Profile</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Cropper.js Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 </head>
 <body>
 
-    <div class="profile-container">
-        <header class="profile-header">
-            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali</a>
-            <h1>Profil Saya</h1>
-        </header>
+    <div class="bg-grid-overlay"></div>
 
-        <main class="profile-card">
-            <div class="profile-image">
-                <i class="fas fa-user-circle"></i>
-            </div>
-            
-            <div class="profile-info">
-                <div class="info-group">
-                    <label>Nama Lengkap</label>
-                    <p>Mahasiswa IT Gafexta</p>
+    <div class="glass-bg">
+        <nav class="top-nav-profile">
+            <button onclick="history.back()" class="btn-back-glass">
+                <i class="fas fa-chevron-left"></i> Kembali
+            </button>
+        </nav>
+
+        <div class="profile-wrapper">
+            <div class="avatar-container">
+                <div class="main-avatar" id="avatar-wrapper" style="overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ed5858;">
+                    <span id="avatar-letter">G</span>
+                    <img id="display-avatar" src="" alt="Profile" style="display: none; width: 100%; height: 100%; object-fit: cover;">
                 </div>
-                <div class="info-group">
-                    <label>Email</label>
-                    <p>mahasiswa@it.example.com</p>
-                </div>
-                <div class="info-group">
-                    <label>Status Keanggotaan</label>
-                    <span class="badge">Premium Reader</span>
-                </div>
+                <label for="input-file" class="change-photo-text" style="cursor: pointer;">Ubah Foto</label>
+                <input type="file" id="input-file" accept="image/*" hidden>
             </div>
 
-            <div class="profile-actions">
-                <button class="edit-btn">Edit Profil</button>
-                <button class="logout-btn">Keluar</button>
+            <div class="user-info-header">
+                <h1 id="profile-username">User Gafexta</h1>
+                <p id="profile-email-masked">loading@mail.com</p>
             </div>
-        </main>
+
+            <div class="profile-menu-grid">
+                <div class="menu-item glass-card" onclick="togglePopup('popup-akun')">
+                    <div class="menu-icon"><i class="fas fa-user-shield"></i></div>
+                    <div class="menu-text">
+                        <h3>Informasi Akun</h3>
+                        <p>Email & Password</p>
+                    </div>
+                </div>
+
+                <div class="menu-item glass-card" onclick="togglePopup('popup-izin')">
+                    <div class="menu-icon"><i class="fas fa-bell"></i></div>
+                    <div class="menu-text">
+                        <h3>Keamanan & Izin</h3>
+                        <p>Notifikasi & Privasi</p>
+                    </div>
+                </div>
+
+                <div class="menu-item glass-card full-width">
+                    <h3><i class="fas fa-history"></i> Histori Berita Terakhir</h3>
+                    <div id="news-history-list" class="mini-list">
+                        <p class="empty-text">Belum ada berita yang dibaca.</p>
+                    </div>
+                </div>
+
+                <div class="menu-item glass-card full-width">
+                    <h3><i class="fas fa-search"></i> Histori Pencarian Terakhir</h3>
+                    <div id="search-history-list" class="mini-list">
+                        <p class="empty-text">Belum ada pencarian.</p>
+                    </div>
+                </div>
+
+                <button class="logout-btn-glass full-width" onclick="logoutUser()">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </button>
+            </div>
+        </div>
     </div>
 
+    <!-- Modal Crop -->
+    <div id="crop-modal" class="crop-modal">
+        <div class="crop-container">
+            <h3>Atur Foto Profil</h3>
+            <div class="crop-wrapper">
+                <img id="image-to-crop" src="">
+            </div>
+            <div class="crop-footer">
+                <button class="crop-btn" onclick="saveCroppedImage()">Simpan Foto</button>
+                <button class="btn-cancel" onclick="closeCropModal()">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Info Akun -->
+    <div id="popup-akun" class="popup-overlay">
+        <div class="popup-content glass-card">
+            <h2>Detail Akun</h2>
+            <div class="info-row">
+                <label>Email</label>
+                <p id="full-email">user@example.com</p>
+            </div>
+            <div class="info-row">
+                <label>Password</label>
+                <p>••••••••</p>
+            </div>
+            <button class="close-popup" onclick="togglePopup('popup-akun')">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Popup Izin -->
+    <div id="popup-izin" class="popup-overlay">
+        <div class="popup-content glass-card">
+            <h2>Notifikasi & Izin</h2>
+            <div class="switch-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <span style="font-size: 14px;">Nyalakan notifikasi?</span>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <button class="close-popup" onclick="togglePopup('popup-izin')">Simpan</button>
+        </div>
+    </div>
+
+    <script>
+        let cropper;
+        const inputFile = document.getElementById("input-file");
+        const imgDisplay = document.getElementById("display-avatar");
+        const letterDisplay = document.getElementById("avatar-letter");
+        const cropModal = document.getElementById("crop-modal");
+        const imageToCrop = document.getElementById("image-to-crop");
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (loggedInUser) {
+                const username = loggedInUser.username || "User";
+                document.getElementById('profile-username').innerText = username;
+                document.getElementById('full-email').innerText = loggedInUser.email;
+                document.getElementById('avatar-letter').innerText = username.charAt(0).toUpperCase();
+
+                const emailParts = loggedInUser.email.split("@");
+                const masked = emailParts[0].substring(0, 1) + "**********@" + emailParts[1];
+                document.getElementById('profile-email-masked').innerText = masked;
+
+                if (loggedInUser.profilePic) {
+                    imgDisplay.src = loggedInUser.profilePic;
+                    imgDisplay.style.display = 'block';
+                    letterDisplay.style.display = 'none';
+                }
+            }
+            loadNewsHistory();
+        });
+
+        inputFile.onchange = function(){
+            const file = inputFile.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imageToCrop.src = e.target.result;
+                    cropModal.style.display = 'flex';
+                    
+                    if(cropper) cropper.destroy();
+
+                    setTimeout(() => {
+                        cropper = new Cropper(imageToCrop, {
+                            aspectRatio: 1,
+                            viewMode: 1,
+                            dragMode: 'move',
+                            responsive: true,
+                            restore: false,
+                        });
+                    }, 150);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveCroppedImage() {
+            if (!cropper) return;
+            const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+            const dataUrl = canvas.toDataURL('image/jpeg');
+
+            const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+            loggedInUser.profilePic = dataUrl;
+            localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
+
+            imgDisplay.src = dataUrl;
+            imgDisplay.style.display = 'block';
+            letterDisplay.style.display = 'none';
+            
+            closeCropModal();
+        }
+
+        function closeCropModal() {
+            cropModal.style.display = 'none';
+            if(cropper) cropper.destroy();
+            inputFile.value = "";
+        }
+
+        function loadNewsHistory() {
+            const history = JSON.parse(localStorage.getItem('newsHistory')) || [];
+            const historyList = document.getElementById('news-history-list');
+            if (history.length > 0) {
+                historyList.innerHTML = '';
+                history.forEach(item => {
+                    historyList.innerHTML += `
+                        <div class="history-item" onclick="location.href='detail.html?id=${encodeURIComponent(item.id)}'" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 12px; transition: 0.3s;">
+                            <img src="${item.thumbnail}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
+                            <p style="font-size: 0.9rem; color: white; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        function togglePopup(id) {
+            const popup = document.getElementById(id);
+            popup.style.display = (popup.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
 </html>
