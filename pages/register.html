@@ -4,37 +4,32 @@
     <meta charset="UTF-8">
     <title>Register - GafextaNews</title>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
-<!-- Custom Alert Modal -->
-<div id="customAlert" class="modal-overlay">
-    <div class="modal-content">
-        <div class="modal-icon">
-            <i class="fas fa-exclamation-circle"></i>
-        </div>
-        <p id="alertMessage"></p>
-        <button onclick="closeAlert()">OK</button>
-    </div>
-</div>
-
 <body class="login-page">
+    <div id="customAlert" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <p id="alertMessage"></p>
+            <button onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
     <div class="login-wrapper">
-        <!-- Sisi Kiri (Info Register) -->
         <div class="welcome-box">
             <h1>Join Us!</h1>
             <p>Create an account to get the latest news updates and personalize your experience.</p>
         </div>
 
-        <!-- Sisi Kanan (Area Form) -->
         <div class="right-side">
-            <!-- Penanda Sign Up di bagian atas -->
             <div class="auth-header">
                 <h2>Sign Up</h2>
             </div>
 
-            <!-- Popup Kecil (Inner Card) untuk Form -->
             <div class="glass-login-card">
                 <form id="registerForm">
                     <input type="text" id="reg-name" placeholder="Username" required>
@@ -46,9 +41,9 @@
                 <div class="social-login">
                     <p>Or register with</p>
                     <div class="icons">
-                        <i class="fab fa-google"></i>
-                        <i class="fab fa-facebook"></i>
-                        <i class="fab fa-twitter"></i>
+                        <a href="../php/google_login.php" class="oauth-btn"><i class="fab fa-google"></i></a>
+                        <a href="../php/fb_login.php" class="oauth-btn"><i class="fab fa-facebook"></i></a>
+                        <a href="../php/x_login.php" class="oauth-btn"><i class="fa-brands fa-x-twitter"></i></a>
                     </div>
                 </div>
                 

@@ -5,10 +5,9 @@
     <title>Login - GafextaNews</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
-<!-- Custom Alert Modal -->
 <div id="customAlert" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-icon">
@@ -21,20 +20,16 @@
 
 <body class="login-page">
     <div class="login-wrapper">
-        <!-- Sisi Kiri (Welcome) -->
         <div class="welcome-box">
             <h1>Welcome!</h1>
             <p>Sign in to join the conversation and share your thoughts.</p>
         </div>
 
-        <!-- Sisi Kanan (Area Form) -->
         <div class="right-side">
-            <!-- Penanda Sign In / Login di bagian atas -->
             <div class="auth-header">
                 <h2>Login</h2>
             </div>
 
-            <!-- Popup Kecil (Inner Card) untuk Form -->
             <div class="glass-login-card">
                 <form id="loginForm">
                     <input type="email" id="login-email" placeholder="Email" required>
@@ -45,9 +40,9 @@
                 <div class="social-login">
                     <p>Or login with</p>
                     <div class="icons">
-                        <i class="fab fa-google"></i>
-                        <i class="fab fa-facebook"></i>
-                        <i class="fab fa-twitter"></i>
+                        <a href="../php/google_login.php" class="oauth-btn"><i class="fab fa-google"></i></a>
+                        <a href="../php/fb_login.php" class="oauth-btn"><i class="fab fa-facebook"></i></a>
+                        <a href="../php/x_login.php" class="oauth-btn"><i class="fa-brands fa-x-twitter"></i></a>
                     </div>
                 </div>
                 
