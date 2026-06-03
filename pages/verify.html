@@ -19,7 +19,7 @@
     <div class="container">
         <div class="left-panel">
             <h1>Verify!</h1>
-            <p>Satu langkah lagi untuk bergabung dengan GafextaNews. Masukkan kode 6 digit yang telah muncul di sistem untuk mengamankan akun Anda.</p>
+            <p>Satu langkah lagi untuk bergabung dengan GafextaNews. Masukkan kode 6 digit yang telah dikirim ke email Anda untuk mengamankan akun Anda.</p>
         </div>
 
         <div class="right-panel">
@@ -85,8 +85,11 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
+                    // AUTO LOGIN: Simpan data user ke localStorage
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    
                     showToast("Verifikasi Berhasil! Mengalihkan...");
-                    setTimeout(() => window.location.href = 'login.html', 2000);
+                    setTimeout(() => window.location.href = '../index.html', 2000);
                 } else {
                     showToast(data.message);
                 }

@@ -93,11 +93,11 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
     })
     .then(data => {
         if(data.status === 'success') {
-            showAlert("Berhasil! Kode OTP Anda: " + data.debug_otp);
+            showAlert(data.message);
             sessionStorage.setItem('email_to_verify', email);
             setTimeout(() => {
                 window.location.href = "verify.html";
-            }, 3000);
+            }, 2000);
         } else {
             showAlert(data.message);
         }
@@ -111,6 +111,6 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
 function isUserLoggedIn() { return localStorage.getItem('currentUser') !== null; }
 
 function logout() {
-    localStorage.removeItem('currentUser');
+    localStorage.clear(); 
     window.location.href = '../index.html';
 }

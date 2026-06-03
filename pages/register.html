@@ -52,5 +52,15 @@
         </div>
     </div>
     <script src="../assets/js/auth.js"></script>
+    <script>
+        // PERBAIKAN: Menyediakan fallback fungsi penutup alert agar tidak crash
+        function closeAlert() {
+            document.getElementById('customAlert').style.display = 'none';
+        }
+        function showAlert(message) {
+            document.getElementById('alertMessage').innerText = message;
+            document.getElementById('customAlert').style.display = 'flex';
+        }
+    </script>
 </body>
 </html>
