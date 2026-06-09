@@ -9,15 +9,36 @@
     <link rel="stylesheet" href="../assets/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Tambahan style agar teks komentar di list terlihat jelas */
-        .comment-display-area {
-            color: #000 !important; /* Memaksa teks jadi hitam */
+        .comment-display-area { color: #000 !important; }
+        .comment-item p { color: #000 !important; margin: 5px 0; }
+        /* FIX VIDEO KELUAR FRAME */
+        .news-body-text iframe,
+        .news-body-text video,
+        .news-body-text embed,
+        .news-body-text object {
+            max-width: 100% !important;
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            border: 2px solid #000;
+            display: block;
+            margin: 20px 0;
         }
-        .comment-item p {
-            color: #000 !important;
-            margin: 5px 0;
+        .news-body-text figure {
+            max-width: 100% !important;
+            margin: 20px 0;
+        }
+        .news-body-text img {
+            max-width: 100% !important;
+            height: auto !important;
+            border-radius: 12px;
+            border: 2px solid #000;
+            display: block;
         }
     </style>
+<base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -39,14 +60,17 @@
                 <a href="category.html?cat=lifestyle">Lifestyle</a>
             </nav>
             <div class="search-profile">
-                <form action="search.html" method="GET" style="display: inline-block; margin: 0;">
-                    <div style="position: relative; display: flex; align-items: center;">
-                        <input type="text" name="q" id="search-input-nav" placeholder="Search news..." style="padding-right: 30px; border-radius: 20px; border: 2px solid #000; padding-left: 10px; height: 35px;">
-                        <button type="submit" style="position: absolute; right: 8px; background: none; border: none; cursor: pointer;">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
+                <div class="search-wrapper" id="search-wrapper">
+                    <form action="search.html" method="GET">
+                        <div class="search-input-container">
+                            <input type="text" name="q" id="search-input-nav" placeholder="Search news..." autocomplete="off">
+                            <button type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div id="search-autocomplete" class="search-autocomplete"></div>
+                </div>
                 <a href="profile.html" style="text-decoration: none; color: inherit; margin-left: 10px; font-weight: bold; white-space: nowrap;">
                     <i class="fas fa-user-circle"></i> Profile
                 </a>
@@ -59,34 +83,56 @@
             <div class="main-content-card">
                 <div class="header-article">
                     <h1 id="detail-title">Loading News...</h1>
-                    <p class="meta-info" id="detail-meta"></p>
+                    <div class="meta-info-bar" id="detail-meta-bar">
+                        <span class="category-badge" id="detail-category">
+                            <i class="fas fa-tag"></i> <span id="detail-category-text">News</span>
+                        </span>
+                        <span class="meta-date" id="detail-date">
+                            <i class="far fa-calendar-alt"></i> <span id="detail-date-text">Loading...</span>
+                        </span>
+                        <span class="meta-reading-time">
+                            <i class="far fa-clock"></i> 5 min read
+                        </span>
+                        <span class="meta-author" id="detail-author" style="display: none;">
+                            <i class="far fa-user"></i> <span id="detail-author-text"></span>
+                        </span>
+                        <button class="share-btn" onclick="shareCurrentArticle()">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
                 </div>
-                
+
                 <img id="detail-image" class="main-featured-image" src="" alt="Featured Image">
-                
+
                 <article class="news-body-text" id="detail-content">
                 </article>
 
                 <div class="comment-box">
-                    <h3><i class="fa fa-comments"></i> Comments</h3>
-                    
-                    <!-- Area Form Komentar Dinamis -->
+                    <h3>
+                        <i class="fa fa-comments"></i> 
+                        Komentar
+                        <span class="comment-count-badge" id="comment-count">0 komentar</span>
+                    </h3>
                     <div id="comment-form-container">
-                        <p>Have an opinion? Please login first to post a comment.</p>
-                        <button class="btn-comment-action" onclick="showLoginModal()" style="background:#ed5858; color:white; border:3px solid #000; padding:12px 25px; border-radius:12px; font-weight:900; cursor:pointer; margin-top: 15px;">Write Comment</button>
+                        <div class="comment-login-prompt">
+                            <p>Have an opinion? Please login first to post a comment.</p>
+                            <button class="btn-comment-action" onclick="showLoginModal()" style="background:#ed5858; color:white; border:3px solid #000; padding:12px 25px; border-radius:12px; font-weight:900; cursor:pointer;">Write Comment</button>
+                        </div>
                     </div>
-
-                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #444;">
-
-                    <!-- Daftar Tampilan Komentar -->
                     <div id="comment-list" class="comment-display-area">
-                        <p style="color: #666;">Loading comments...</p>
+                        <div class="comment-empty-state">
+                            <i class="far fa-comment-dots"></i>
+                            <p>Belum ada komentar. Jadilah yang pertama!</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- READ ALSO SECTION -->
             <div class="more-news-grid-container">
-                <h3 class="grid-section-title sidebar-title">Read Also</h3>
+                <div class="section-header-bar">
+                    <h3 class="grid-section-title">Read Also</h3>
+                </div>
                 <div class="news-scroll-grid" id="bottom-news-grid">
                 </div>
             </div>
@@ -161,61 +207,205 @@
         const params = new URLSearchParams(window.location.search);
         const articleId = params.get('id');
         let displayedArticleIds = [];
+        let currentArticle = null;
 
         async function fetchContent() {
             if (!articleId) return;
             displayedArticleIds.push(articleId);
             try {
-                const detailUrl = `https://content.guardianapis.com/${articleId}?api-key=${API_KEY}&show-fields=thumbnail,body,webPublicationDate`;
+                const detailUrl = 'https://content.guardianapis.com/' + articleId + '?api-key=' + API_KEY + '&show-fields=thumbnail,body,webPublicationDate,byline,sectionName';
                 const resDetail = await fetch(detailUrl);
                 const dataDetail = await resDetail.json();
                 const art = dataDetail.response.content;
+                currentArticle = art;
 
                 document.getElementById('detail-title').innerText = art.webTitle;
                 document.getElementById('detail-image').src = art.fields?.thumbnail || 'https://via.placeholder.com/800x450';
-                document.getElementById('detail-meta').innerHTML = `<i class="far fa-calendar-alt"></i> Published: ${new Date(art.webPublicationDate).toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'})}`;
-                document.getElementById('detail-content').innerHTML = art.fields?.body || '<p>Failed to load news content.</p>';
 
-                // Simpan ke Histori
+                const categoryName = art.sectionName || 'News';
+                document.getElementById('detail-category-text').innerText = categoryName;
+                const catColors = getCategoryColor(categoryName);
+                document.getElementById('detail-category').style.background = catColors.bg;
+                document.getElementById('detail-category').style.color = catColors.text;
+                document.getElementById('detail-category').style.borderColor = catColors.border;
+
+                const pubDate = new Date(art.webPublicationDate);
+                document.getElementById('detail-date-text').innerText = pubDate.toLocaleDateString('en-US', {
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric'
+                });
+
+                if (art.fields?.byline) {
+                    document.getElementById('detail-author').style.display = 'inline-flex';
+                    document.getElementById('detail-author-text').innerText = art.fields.byline;
+                }
+
+                let bodyContent = art.fields?.body || '<p>Failed to load news content.</p>';
+                bodyContent = bodyContent.replace(/<iframe/g, '<div class="video-wrapper"><iframe');
+                bodyContent = bodyContent.replace(/<\/iframe>/g, '</iframe></div>');
+                document.getElementById('detail-content').innerHTML = bodyContent;
+
                 saveToHistory(art);
-
                 await fetchRecommendations();
                 await fetchBottomGrid();
-                
                 renderCommentSection();
-            } catch (err) { console.error(err); }
+            } catch (err) { 
+                console.error(err); 
+            }
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                'Politics': { bg: '#e3f2fd', text: '#1565c0', border: '#90caf9' },
+                'World': { bg: '#f3e5f5', text: '#6a1b9a', border: '#ce93d8' },
+                'Sport': { bg: '#e8f5e9', text: '#2e7d32', border: '#a5d6a7' },
+                'Business': { bg: '#fff3e0', text: '#e65100', border: '#ffcc80' },
+                'Technology': { bg: '#e0f7fa', text: '#00838f', border: '#80deea' },
+                'Culture': { bg: '#fce4ec', text: '#c2185b', border: '#f48fb1' },
+                'Entertainment': { bg: '#f3e5f5', text: '#7b1fa2', border: '#ce93d8' },
+                'Lifestyle': { bg: '#e8f5e9', text: '#388e3c', border: '#a5d6a7' },
+                'Economy': { bg: '#fff8e1', text: '#f57f17', border: '#ffe082' },
+                'Science': { bg: '#e3f2fd', text: '#1565c0', border: '#90caf9' },
+                'Health': { bg: '#e8f5e9', text: '#2e7d32', border: '#a5d6a7' },
+                'Education': { bg: '#e0f2f1', text: '#00695c', border: '#80cbc4' },
+                'Travel': { bg: '#e1f5fe', text: '#0277bd', border: '#81d4fa' },
+                'Food': { bg: '#fff3e0', text: '#ef6c00', border: '#ffcc80' },
+                'Fashion': { bg: '#fce4ec', text: '#ad1457', border: '#f48fb1' },
+                'Music': { bg: '#f3e5f5', text: '#6a1b9a', border: '#ce93d8' },
+                'Art and Design': { bg: '#f3e5f5', text: '#7b1fa2', border: '#ce93d8' },
+                'Football': { bg: '#e8f5e9', text: '#2e7d32', border: '#a5d6a7' },
+                'UK news': { bg: '#e3f2fd', text: '#1565c0', border: '#90caf9' },
+                'US news': { bg: '#e3f2fd', text: '#1565c0', border: '#90caf9' },
+                'Environment': { bg: '#e8f5e9', text: '#2e7d32', border: '#a5d6a7' },
+                'Crime': { bg: '#ffebee', text: '#c62828', border: '#ef9a9a' },
+                'Law': { bg: '#e3f2fd', text: '#1565c0', border: '#90caf9' },
+                'Finance': { bg: '#fff8e1', text: '#f57f17', border: '#ffe082' },
+                'Opinion': { bg: '#fff3e0', text: '#e65100', border: '#ffcc80' },
+                'Australia news': { bg: '#e8f5e9', text: '#2e7d32', border: '#a5d6a7' }
+            };
+            return colors[category] || { bg: '#fdf2f2', text: '#ed5858', border: '#f8c5ca' };
         }
 
         function saveToHistory(art) {
             let history = JSON.parse(localStorage.getItem('newsHistory')) || [];
-            // Cek jika sudah ada agar tidak duplikat
             history = history.filter(item => item.id !== art.id);
-            // Tambahkan di awal array
             history.unshift({
                 id: art.id,
                 title: art.webTitle,
                 thumbnail: art.fields?.thumbnail || 'https://via.placeholder.com/80'
             });
-            // Batasi 5 histori saja
             if (history.length > 5) history.pop();
             localStorage.setItem('newsHistory', JSON.stringify(history));
         }
 
+        function isArticleBookmarked(articleId) {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarkedArticles')) || [];
+            return bookmarks.some(b => b.id === articleId);
+        }
+
+        function toggleBookmark(event, articleId, title, thumbnail, category) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            if (!isUserLoggedIn()) {
+                document.getElementById('loginModal').classList.add('active');
+                return;
+            }
+
+            let bookmarks = JSON.parse(localStorage.getItem('bookmarkedArticles')) || [];
+            const existingIndex = bookmarks.findIndex(b => b.id === articleId);
+            const encodedId = encodeURIComponent(articleId);
+            const btn = document.getElementById('bookmark-btn-' + encodedId) || document.getElementById('bookmark-btn-grid-' + encodedId);
+
+            if (existingIndex !== -1) {
+                bookmarks.splice(existingIndex, 1);
+                if (btn) {
+                    btn.classList.remove('bookmarked');
+                    btn.innerHTML = '<i class="fas fa-bookmark"></i> Save';
+                }
+                showAlert('Article removed from saved.');
+            } else {
+                bookmarks.unshift({
+                    id: articleId,
+                    title: title,
+                    thumbnail: thumbnail,
+                    category: category,
+                    savedAt: new Date().toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+                });
+                if (btn) {
+                    btn.classList.add('bookmarked');
+                    btn.innerHTML = '<i class="fas fa-bookmark"></i> Saved';
+                }
+                showAlert('Article saved!');
+            }
+
+            if (bookmarks.length > 50) bookmarks.pop();
+            localStorage.setItem('bookmarkedArticles', JSON.stringify(bookmarks));
+        }
+
+        function shareArticleCard(event, url, title) {
+            event.stopPropagation();
+            event.preventDefault();
+            const fullUrl = window.location.origin + '/gafextaNews/' + url;
+            if (navigator.share) {
+                navigator.share({ title: title, url: fullUrl }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(fullUrl).then(() => {
+                    showAlert('Link copied to clipboard!');
+                }).catch(() => {
+                    showAlert('Could not copy link.');
+                });
+            }
+        }
+
         async function fetchRecommendations() {
-            const recUrl = `https://content.guardianapis.com/search?api-key=${API_KEY}&show-fields=thumbnail&page-size=10`;
+            const recUrl = 'https://content.guardianapis.com/search?api-key=' + API_KEY + '&show-fields=thumbnail,webPublicationDate,sectionName&page-size=10';
             const resRec = await fetch(recUrl);
             const dataRec = await resRec.json();
             const side = document.getElementById('recommendation-list');
             side.innerHTML = ''; 
             let count = 0;
+
             dataRec.response.results.forEach(item => {
                 if (!displayedArticleIds.includes(item.id) && count < 5) {
                     displayedArticleIds.push(item.id);
+                    const categoryName = item.sectionName || 'News';
+                    const catColors = getCategoryColor(categoryName);
+                    const pubDate = new Date(item.webPublicationDate);
+                    const formattedDate = pubDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                    const hasImage = item.fields?.thumbnail && item.fields.thumbnail.startsWith('http');
+                    const isBookmarked = isArticleBookmarked(item.id);
+                    const encodedId = encodeURIComponent(item.id);
+                    const safeTitle = item.webTitle.replace(/'/g, "\\'");
+
                     side.innerHTML += `
-                        <a href="detail.html?id=${encodeURIComponent(item.id)}" class="rec-card">
-                            <img src="${item.fields?.thumbnail || 'https://via.placeholder.com/80'}" alt="thumb">
-                            <span>${item.webTitle}</span>
-                        </a>
+                        <div class="rec-card-wrapper">
+                            <a href="detail.html?id=${encodedId}" class="rec-card">
+                                <div class="rec-image-wrapper">
+                                    ${hasImage ? `<img src="${item.fields.thumbnail}" alt="thumb">` : `<i class="fas fa-newspaper no-image-icon"></i>`}
+                                </div>
+                                <div class="rec-content">
+                                    <span class="rec-category-badge" style="background: ${catColors.bg}; color: ${catColors.text}; border: 1px solid ${catColors.border};">
+                                        ${categoryName}
+                                    </span>
+                                    <span class="rec-title">${item.webTitle}</span>
+                                    <span class="rec-meta">
+                                        <i class="far fa-calendar"></i> ${formattedDate}
+                                    </span>
+                                </div>
+                            </a>
+                            <div class="rec-actions">
+                                <button class="rec-action-btn ${isBookmarked ? 'bookmarked' : ''}" 
+                                        id="bookmark-btn-${encodedId}"
+                                        onclick="toggleBookmark(event, '${item.id}', '${safeTitle}', '${item.fields?.thumbnail || ''}', '${categoryName}')">
+                                    <i class="fas fa-bookmark"></i> ${isBookmarked ? 'Saved' : 'Save'}
+                                </button>
+                                <button class="rec-action-btn" onclick="shareArticleCard(event, 'pages/detail.html?id=${encodedId}', '${safeTitle}')">
+                                    <i class="fas fa-share-alt"></i> Share
+                                </button>
+                            </div>
+                        </div>
                     `;
                     count++;
                 }
@@ -223,18 +413,48 @@
         }
 
         async function fetchBottomGrid() {
-            const gridUrl = `https://content.guardianapis.com/search?api-key=${API_KEY}&show-fields=thumbnail&page-size=20`;
+            const gridUrl = 'https://content.guardianapis.com/search?api-key=' + API_KEY + '&show-fields=thumbnail,webPublicationDate,sectionName&page-size=20';
             const resGrid = await fetch(gridUrl);
             const dataGrid = await resGrid.json();
             const gridCont = document.getElementById('bottom-news-grid');
             gridCont.innerHTML = '';
             let count = 0;
+
             dataGrid.response.results.forEach(item => {
                 if (!displayedArticleIds.includes(item.id) && count < 12) {
+                    const categoryName = item.sectionName || 'News';
+                    const catColors = getCategoryColor(categoryName);
+                    const pubDate = new Date(item.webPublicationDate);
+                    const formattedDate = pubDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                    const hasImage = item.fields?.thumbnail && item.fields.thumbnail.startsWith('http');
+                    const isBookmarked = isArticleBookmarked(item.id);
+                    const encodedId = encodeURIComponent(item.id);
+                    const safeTitle = item.webTitle.replace(/'/g, "\\'");
+
                     gridCont.innerHTML += `
-                        <div class="grid-news-card" onclick="location.href='detail.html?id=${encodeURIComponent(item.id)}'">
-                            <img src="${item.fields?.thumbnail || 'https://via.placeholder.com/200x120'}" alt="news">
-                            <h4>${item.webTitle}</h4>
+                        <div class="grid-news-card-wrapper">
+                            <div class="grid-news-card" onclick="location.href='detail.html?id=${encodedId}'">
+                                <div class="card-image-wrapper">
+                                    ${hasImage ? `<img src="${item.fields.thumbnail}" alt="news">` : `<i class="fas fa-newspaper no-image-icon"></i>`}
+                                </div>
+                                <span class="card-category-badge" style="background: ${catColors.bg}; color: ${catColors.text}; border: 1px solid ${catColors.border};">
+                                    ${categoryName}
+                                </span>
+                                <h4>${item.webTitle}</h4>
+                                <span class="card-meta">
+                                    <i class="far fa-calendar"></i> ${formattedDate}
+                                </span>
+                            </div>
+                            <div class="grid-card-actions">
+                                <button class="grid-action-btn ${isBookmarked ? 'bookmarked' : ''}" 
+                                        id="bookmark-btn-grid-${encodedId}"
+                                        onclick="toggleBookmark(event, '${item.id}', '${safeTitle}', '${item.fields?.thumbnail || ''}', '${categoryName}')">
+                                    <i class="fas fa-bookmark"></i> ${isBookmarked ? 'Saved' : 'Save'}
+                                </button>
+                                <button class="grid-action-btn" onclick="shareArticleCard(event, 'pages/detail.html?id=${encodedId}', '${safeTitle}')">
+                                    <i class="fas fa-share-alt"></i> Share
+                                </button>
+                            </div>
                         </div>
                     `;
                     count++;
@@ -246,11 +466,93 @@
             const container = document.getElementById('comment-form-container');
             if (isUserLoggedIn()) {
                 container.innerHTML = `
-                    <textarea id="comment-input" placeholder="Tulis pendapatmu di sini..." style="width: 100%; height: 100px; padding: 10px; border-radius: 8px; border: 2px solid #000; margin-top: 10px; background: rgba(255, 255, 255, 0.9); color: #000; font-family: inherit; font-weight: 500;"></textarea>
-                    <button onclick="postComment(articleId)" style="background:#ed5858; color:white; border:3px solid #000; padding:10px 20px; border-radius:10px; font-weight:900; cursor:pointer; margin-top: 10px;">Kirim Komentar</button>
+                    <div class="comment-form-wrapper">
+                        <textarea id="comment-input" placeholder="Tulis pendapatmu di sini..." maxlength="500"></textarea>
+                        <div class="comment-char-count">0 / 500</div>
+                        <button class="btn-kirim" onclick="postComment(articleId)">Kirim Komentar</button>
+                    </div>
                 `;
+                const textarea = document.getElementById('comment-input');
+                const charCount = container.querySelector('.comment-char-count');
+                textarea.addEventListener('input', function() {
+                    charCount.textContent = this.value.length + ' / 500';
+                });
             }
             loadComments(articleId);
+        }
+
+        function loadComments(articleId) {
+            const comments = JSON.parse(localStorage.getItem('comments_' + articleId)) || [];
+            const commentList = document.getElementById('comment-list');
+            const countBadge = document.getElementById('comment-count');
+            countBadge.textContent = comments.length + ' komentar';
+
+            if (comments.length === 0) {
+                commentList.innerHTML = `
+                    <div class="comment-empty-state">
+                        <i class="far fa-comment-dots"></i>
+                        <p>Belum ada komentar. Jadilah yang pertama!</p>
+                    </div>
+                `;
+            } else {
+                commentList.innerHTML = comments.map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-author">${comment.author}</div>
+                            <div class="comment-text">${comment.text}</div>
+                            <div class="comment-meta">
+                                <span>${comment.time}</span>
+                                <span class="comment-reply-btn">Reply</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function postComment(articleId) {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if (!text) return;
+            const comments = JSON.parse(localStorage.getItem('comments_' + articleId)) || [];
+            comments.push({
+                author: 'You',
+                text: text.replace(/</g, '&lt;').replace(/>/g, '&gt;'),
+                time: 'Just now'
+            });
+            localStorage.setItem('comments_' + articleId, JSON.stringify(comments));
+            input.value = '';
+            document.querySelector('.comment-char-count').textContent = '0 / 500';
+            loadComments(articleId);
+        }
+
+        function shareCurrentArticle() {
+            if (!currentArticle) return;
+            const url = window.location.href;
+            const title = currentArticle.webTitle;
+            if (navigator.share) {
+                navigator.share({ title: title, url: url }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    showAlert('Link copied to clipboard!');
+                }).catch(() => {
+                    showAlert('Could not copy link.');
+                });
+            }
+        }
+
+        function showAlert(message) {
+            const alertModal = document.getElementById('customAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            alertMessage.textContent = message;
+            alertModal.classList.add('active');
+        }
+
+        function closeAlert() {
+            document.getElementById('customAlert').classList.remove('active');
         }
 
         function saveAndGoToLogin() {
@@ -262,13 +564,146 @@
             if (isUserLoggedIn()) {
                 renderCommentSection();
             } else {
-                document.getElementById('loginModal').style.display = 'flex'; 
+                document.getElementById('loginModal').classList.add('active');
             }
         }
-        
-        function closeModal() { document.getElementById('loginModal').style.display = 'none'; }
 
-        fetchContent();
+        function closeModal() { 
+            document.getElementById('loginModal').classList.remove('active'); 
+        }
+
+        const searchCategories = [
+            { id: 'politics', name: 'Politics', icon: 'fa-landmark' },
+            { id: 'business', name: 'Business', icon: 'fa-briefcase' },
+            { id: 'economy', name: 'Economy', icon: 'fa-chart-line' },
+            { id: 'technology', name: 'Technology', icon: 'fa-microchip' },
+            { id: 'culture', name: 'Culture', icon: 'fa-palette' },
+            { id: 'entertainment', name: 'Entertainment', icon: 'fa-film' },
+            { id: 'lifestyle', name: 'Lifestyle', icon: 'fa-heart' },
+            { id: 'world', name: 'World', icon: 'fa-globe' },
+            { id: 'science', name: 'Science', icon: 'fa-flask' },
+            { id: 'environment', name: 'Environment', icon: 'fa-leaf' },
+            { id: 'health', name: 'Health', icon: 'fa-heart-pulse' },
+            { id: 'finance', name: 'Finance', icon: 'fa-coins' },
+            { id: 'crime', name: 'Crime', icon: 'fa-gavel' },
+            { id: 'law', name: 'Law', icon: 'fa-scale-balanced' },
+            { id: 'education', name: 'Education', icon: 'fa-graduation-cap' },
+            { id: 'fashion', name: 'Fashion', icon: 'fa-shirt' },
+            { id: 'music', name: 'Music', icon: 'fa-music' },
+            { id: 'travel', name: 'Travel', icon: 'fa-plane' },
+            { id: 'food', name: 'Food', icon: 'fa-utensils' },
+            { id: 'sport', name: 'Sport', icon: 'fa-futbol' }
+        ];
+
+        let searchTimeout;
+        let currentArticlesForAutocomplete = [];
+
+        function highlightMatch(text, query) {
+            if (!query) return text;
+            const regex = new RegExp('(' + query + ')', 'gi');
+            return text.replace(regex, '<span class="autocomplete-highlight">$1</span>');
+        }
+
+        function renderAutocomplete(query) {
+            const dropdown = document.getElementById('search-autocomplete');
+            if (!dropdown) return;
+            const lowerQuery = query.toLowerCase();
+            let html = '';
+
+            const matchedCategories = searchCategories.filter(cat => cat.name.toLowerCase().includes(lowerQuery));
+            if (matchedCategories.length > 0) {
+                html += '<div class="autocomplete-section"><div class="autocomplete-section-title"><i class="fas fa-folder"></i> Category</div>';
+                matchedCategories.forEach(cat => {
+                    html += '<a href="category.html?cat=' + cat.id + '" class="autocomplete-item"><div class="autocomplete-item-icon"><i class="fas ' + cat.icon + '"></i></div><div><div class="autocomplete-item-text">' + highlightMatch(cat.name, query) + '</div></div></a>';
+                });
+                html += '</div>';
+            }
+
+            const matchedArticles = currentArticlesForAutocomplete.filter(article => article.webTitle.toLowerCase().includes(lowerQuery)).slice(0, 5);
+            if (matchedArticles.length > 0) {
+                html += '<div class="autocomplete-section"><div class="autocomplete-section-title"><i class="fas fa-newspaper"></i> Related Articles</div>';
+                matchedArticles.forEach(article => {
+                    const thumbnail = article.fields?.thumbnail;
+                    const hasImage = thumbnail && thumbnail.startsWith('http');
+                    const iconStyle = hasImage ? "background-image: url('" + thumbnail + "'); background-size: cover;" : "";
+                    const iconContent = !hasImage ? '<i class="fas fa-newspaper"></i>' : '';
+                    const meta = (article.sectionName || 'News') + ' \u2022 ' + new Date(article.webPublicationDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                    html += '<a href="detail.html?id=' + encodeURIComponent(article.id) + '" class="autocomplete-item"><div class="autocomplete-item-icon" style="' + iconStyle + '">' + iconContent + '</div><div><div class="autocomplete-item-text">' + highlightMatch(article.webTitle, query) + '</div><div class="autocomplete-item-meta">' + meta + '</div></div></a>';
+                });
+                html += '</div>';
+            }
+
+            if (matchedCategories.length === 0 && matchedArticles.length === 0) {
+                html += '<div class="autocomplete-no-results"><i class="fas fa-search"></i><div>No results found for "<strong>' + query + '</strong>"</div><div style="font-size: 11px; margin-top: 4px;">Press Enter to search</div></div>';
+            }
+
+            html += '<div class="autocomplete-footer"><a href="search.html?q=' + encodeURIComponent(query) + '" class="autocomplete-item"><i class="fas fa-search"></i> Search all results for "' + query + '"</a></div>';
+
+            dropdown.innerHTML = html;
+            dropdown.classList.add('active');
+        }
+
+        function setupAutocomplete() {
+            const searchInput = document.getElementById('search-input-nav');
+            const searchWrapper = document.getElementById('search-wrapper');
+            const dropdown = document.getElementById('search-autocomplete');
+            if (!searchInput) return;
+
+            // HAPUS class active dari JS - biarkan CSS :focus handle semua (sama kaya dashboard)
+            searchInput.addEventListener('focus', () => {
+                const query = searchInput.value.trim();
+                if (query.length >= 2) renderAutocomplete(query);
+            });
+
+            searchInput.addEventListener('blur', () => {
+                setTimeout(() => {
+                    if (!dropdown.matches(':hover')) {
+                        dropdown.classList.remove('active');
+                    }
+                }, 200);
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.trim();
+                if (query.length >= 2) {
+                    searchTimeout = setTimeout(() => renderAutocomplete(query), 300);
+                } else {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const query = searchInput.value.trim();
+                    if (query) window.location.href = 'search.html?q=' + encodeURIComponent(query);
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (searchWrapper && !searchWrapper.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+
+        async function fetchArticlesForAutocomplete() {
+            try {
+                const url = 'https://content.guardianapis.com/search?api-key=' + API_KEY + '&show-fields=thumbnail,webPublicationDate,sectionName&page-size=20';
+                const response = await fetch(url);
+                const data = await response.json();
+                currentArticlesForAutocomplete = data.response.results || [];
+            } catch (err) {
+                console.error('Error fetching autocomplete articles:', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchContent();
+            fetchArticlesForAutocomplete();
+            setupAutocomplete();
+        });
     </script>
 </body>
 </html>

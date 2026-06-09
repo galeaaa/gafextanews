@@ -111,6 +111,9 @@ document.getElementById('registerForm')?.addEventListener('submit', function(e) 
 function isUserLoggedIn() { return localStorage.getItem('currentUser') !== null; }
 
 function logout() {
-    localStorage.clear(); 
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('user_token');
+    localStorage.removeItem('newsHistory');
+     
     window.location.href = '../index.html';
 }

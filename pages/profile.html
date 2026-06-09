@@ -30,8 +30,8 @@
                         <img class="display-avatar-sync" id="sidebar-avatar-img" src="" alt="Profile" style="display: none; width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <input type="file" id="input-file-sidebar" accept="image/*" hidden>
-                    <h2 class="username-text-sync" id="sidebar-username">User Gafexta</h2>
-                    <p class="email-masked-sync" id="sidebar-email">loading@mail.com</p>
+                    <h2 class="username-text-sync" id="sidebar-username">User</h2>
+                    <p class="email-masked-sync" id="sidebar-email">user@example.com</p>
                 </div>
 
                 <nav class="sidebar-menu">
@@ -71,9 +71,9 @@
 
                         <!-- Username and Email -->
                         <div class="profile-user-info-center">
-                            <h2 id="profile-fullname">Galea Violet</h2>
-                            <p class="username-tag-center">@<span id="profile-username">User Gafexta</span></p>
-                            <p class="email-text-center"><i class="fas fa-envelope"></i> <span id="profile-email-masked">loading@mail.com</span></p>
+                            <h2 id="profile-fullname">User</h2>
+                            <p class="username-tag-center">@<span id="profile-username">User</span></p>
+                            <p class="email-text-center"><i class="fas fa-envelope"></i> <span id="profile-email-masked">user@example.com</span></p>
                         </div>
 
                         <!-- Edit Profile Button -->
@@ -164,12 +164,12 @@
                             
                             <div class="bio-section-inline">
                                 <label><i class="fas fa-pen"></i> Bio</label>
-                                <p id="profile-bio">Web Developer & UI/UX Design Enthusiast. Love reading tech news and following the latest digital developments.</p>
+                                <p id="profile-bio">-</p>
                             </div>
 
                             <div class="join-date-section">
                                 <label><i class="fas fa-calendar-check"></i> Member Since</label>
-                                <p id="profile-joindate">12 January 2026</p>
+                                <p id="profile-joindate">-</p>
                             </div>
                         </div>
                     </div>
@@ -180,26 +180,7 @@
                         <div class="glass-card full-width">
                             <div class="section-title-btn"><i class="fas fa-history"></i> Recent News History</div>
                             <div id="news-history-list" class="mini-list">
-                                <div class="history-news-item">
-                                    <img src="https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?w=150" alt="news">
-                                    <div class="history-item-details">
-                                        <h4>Australia news live: Hanson considers lower-house run; RBA interest rates...</h4>
-                                        <div class="history-meta-tags">
-                                            <span class="history-category">Politics</span>
-                                            <span class="history-time"><i class="far fa-clock"></i> 2 hours ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="history-news-item">
-                                    <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=150" alt="news">
-                                    <div class="history-item-details">
-                                        <h4>Marco Rubio to visit Rome, reportedly to 'thaw' US relations with Italy</h4>
-                                        <div class="history-meta-tags">
-                                            <span class="history-category">International</span>
-                                            <span class="history-time"><i class="far fa-clock"></i> 5 hours ago</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <p class="empty-status">No reading history yet.</p>
                             </div>
                         </div>
 
@@ -628,6 +609,16 @@
             { id: "lifestyle", name: "Lifestyle", icon: "🌟" }
         ];
 
+        // ==================== PROTECT PAGE ====================
+        // Redirect ke login kalau belum login
+        (function protectPage() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+        })();
+
         function switchSection(sectionId, element) {
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
@@ -639,75 +630,79 @@
             document.getElementById(sectionId).classList.add('active');
             element.classList.add('active');
             
-            // Close inline edit when switching sections
             closeInlineEdit();
         }
 
         function loadUserData() {
             const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
-            if (loggedInUser) {
-                const username = loggedInUser.username || "User";
-                const bio = loggedInUser.bio || "Web Developer & UI/UX Design Enthusiast. Love reading tech news and following the latest digital developments.";
-                const joinDate = loggedInUser.joinDate || "12 January 2026";
-                const gender = loggedInUser.gender || "";
-                const birthdate = loggedInUser.birthdate || "";
-                const occupation = loggedInUser.occupation || "";
-                const hobbies = loggedInUser.hobbies || "";
-                
-                // Update username everywhere
-                document.getElementById('profile-username').innerText = username;
-                document.getElementById('profile-fullname').innerText = username;
-                document.getElementById('sidebar-username').innerText = username;
-                document.querySelectorAll('.username-text-sync').forEach(el => el.innerText = username);
-                
-                // Update bio
-                document.getElementById('profile-bio').innerText = bio;
-                
-                // Update join date
-                document.getElementById('profile-joindate').innerHTML = '<i class="fas fa-calendar-alt"></i> ' + joinDate;
-                
-                // Update additional info
-                document.getElementById('profile-gender').innerText = gender || "-";
-                document.getElementById('profile-birthdate').innerText = birthdate ? formatDate(birthdate) : "-";
-                document.getElementById('profile-occupation').innerText = occupation || "-";
-                document.getElementById('profile-hobbies').innerText = hobbies || "-";
-                
-                // Update email
-                document.getElementById('full-email').innerText = loggedInUser.email;
-                const emailParts = loggedInUser.email.split("@");
-                const masked = emailParts[0].substring(0, 2) + "*****@" + emailParts[1];
-                document.getElementById('profile-email-masked').innerText = masked;
-                document.getElementById('sidebar-email').innerText = masked;
-                
-                // Update avatar letter
-                const upperLetter = username.charAt(0).toUpperCase();
-                letterDisplay.innerText = upperLetter;
-                sidebarLetterDisplay.innerText = upperLetter;
-                
-                // Update profile picture if exists
-                if (loggedInUser.profilePic) {
-                    imgDisplay.src = loggedInUser.profilePic;
-                    imgDisplay.style.display = 'block';
-                    letterDisplay.style.display = 'none';
-                    
-                    sidebarImgDisplay.src = loggedInUser.profilePic;
-                    sidebarImgDisplay.style.display = 'block';
-                    sidebarLetterDisplay.style.display = 'none';
-                } else {
-                    imgDisplay.style.display = 'none';
-                    letterDisplay.style.display = 'flex';
-                    sidebarImgDisplay.style.display = 'none';
-                    sidebarLetterDisplay.style.display = 'flex';
-                }
-
-                // Update inline edit form values
-                document.getElementById('edit-username-inline').value = username;
-                document.getElementById('edit-bio-inline').value = bio;
-                document.getElementById('edit-gender-inline').value = gender;
-                document.getElementById('edit-birthdate-inline').value = birthdate;
-                document.getElementById('edit-occupation-inline').value = occupation;
-                document.getElementById('edit-hobbies-inline').value = hobbies;
+            
+            if (!loggedInUser) {
+                window.location.href = 'login.html';
+                return;
             }
+            
+            const username = loggedInUser.username || "User";
+            const email = loggedInUser.email || "user@example.com";
+            const bio = loggedInUser.bio || "-";
+            const joinDate = loggedInUser.joinDate || new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+            const gender = loggedInUser.gender || "-";
+            const birthdate = loggedInUser.birthdate || "";
+            const occupation = loggedInUser.occupation || "-";
+            const hobbies = loggedInUser.hobbies || "-";
+            
+            // Update username everywhere
+            document.getElementById('profile-username').innerText = username;
+            document.getElementById('profile-fullname').innerText = username;
+            document.getElementById('sidebar-username').innerText = username;
+            document.querySelectorAll('.username-text-sync').forEach(el => el.innerText = username);
+            
+            // Update bio
+            document.getElementById('profile-bio').innerText = bio;
+            
+            // Update join date
+            document.getElementById('profile-joindate').innerHTML = '<i class="fas fa-calendar-alt"></i> ' + joinDate;
+            
+            // Update additional info
+            document.getElementById('profile-gender').innerText = gender;
+            document.getElementById('profile-birthdate').innerText = birthdate ? formatDate(birthdate) : "-";
+            document.getElementById('profile-occupation').innerText = occupation;
+            document.getElementById('profile-hobbies').innerText = hobbies;
+            
+            // Update email
+            document.getElementById('full-email').innerText = email;
+            const emailParts = email.split("@");
+            const masked = emailParts[0].substring(0, 2) + "*****@" + emailParts[1];
+            document.getElementById('profile-email-masked').innerText = masked;
+            document.getElementById('sidebar-email').innerText = masked;
+            
+            // Update avatar letter
+            const upperLetter = username.charAt(0).toUpperCase();
+            letterDisplay.innerText = upperLetter;
+            sidebarLetterDisplay.innerText = upperLetter;
+            
+            // Update profile picture if exists
+            if (loggedInUser.profilePic) {
+                imgDisplay.src = loggedInUser.profilePic;
+                imgDisplay.style.display = 'block';
+                letterDisplay.style.display = 'none';
+                
+                sidebarImgDisplay.src = loggedInUser.profilePic;
+                sidebarImgDisplay.style.display = 'block';
+                sidebarLetterDisplay.style.display = 'none';
+            } else {
+                imgDisplay.style.display = 'none';
+                letterDisplay.style.display = 'flex';
+                sidebarImgDisplay.style.display = 'none';
+                sidebarLetterDisplay.style.display = 'flex';
+            }
+
+            // Update inline edit form values
+            document.getElementById('edit-username-inline').value = username;
+            document.getElementById('edit-bio-inline').value = bio === "-" ? "" : bio;
+            document.getElementById('edit-gender-inline').value = gender === "-" ? "" : gender;
+            document.getElementById('edit-birthdate-inline').value = birthdate;
+            document.getElementById('edit-occupation-inline').value = occupation === "-" ? "" : occupation;
+            document.getElementById('edit-hobbies-inline').value = hobbies === "-" ? "" : hobbies;
         }
 
         function formatDate(dateString) {
@@ -721,13 +716,10 @@
             const additionalInfo = document.getElementById('profile-additional-info');
             const editBtnWrapper = document.querySelector('.profile-edit-btn-wrapper');
             
-            // Hide additional info and edit button
             additionalInfo.style.display = 'none';
             editBtnWrapper.style.display = 'none';
-            // Show edit form
             editForm.style.display = 'block';
             
-            // Scroll to form
             editForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -740,7 +732,6 @@
             additionalInfo.style.display = 'block';
             editBtnWrapper.style.display = 'block';
             
-            // Clear error message
             document.getElementById('username-error').innerText = '';
         }
 
@@ -889,8 +880,14 @@
         }
         
         function loadNewsHistory() {
-            const history = JSON.parse(localStorage.getItem('newsHistory')) || [];
+            const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!loggedInUser) return;
+            
+            // History per user (gunakan key unik per user)
+            const historyKey = 'newsHistory_' + loggedInUser.id;
+            const history = JSON.parse(localStorage.getItem(historyKey)) || [];
             const historyList = document.getElementById('news-history-list');
+            
             if (history.length > 0) {
                 historyList.innerHTML = '';
                 history.slice(0, 5).forEach(item => {
@@ -924,9 +921,19 @@
             }
         }
         
+        // ==================== LOGOUT BERSIH ====================
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
+                // Hapus SEMUA data user
                 localStorage.removeItem('currentUser');
+                localStorage.removeItem('user_token');
+                
+                // Hapus history user yang sedang login
+                const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (loggedInUser && loggedInUser.id) {
+                    localStorage.removeItem('newsHistory_' + loggedInUser.id);
+                }
+                
                 window.location.href = 'login.html';
             }
         }
@@ -1076,7 +1083,10 @@
 
         function clearHistory() {
             if (confirm('Are you sure you want to clear all reading history?')) {
-                localStorage.removeItem('newsHistory');
+                const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (loggedInUser && loggedInUser.id) {
+                    localStorage.removeItem('newsHistory_' + loggedInUser.id);
+                }
                 loadNewsHistory();
                 showSuccessMessage('Reading history cleared!');
             }
@@ -1098,11 +1108,17 @@
                     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                     const newUsers = users.filter(u => u.email !== currentUser.email);
                     localStorage.setItem('users', JSON.stringify(newUsers));
+                    
+                    // Hapus semua data user
                     localStorage.removeItem('currentUser');
-                    localStorage.removeItem('newsHistory');
+                    localStorage.removeItem('user_token');
+                    if (currentUser && currentUser.id) {
+                        localStorage.removeItem('newsHistory_' + currentUser.id);
+                    }
                     localStorage.removeItem('searchHistory');
                     localStorage.removeItem('notificationSettings');
                     localStorage.removeItem('preferredCategories');
+                    
                     showSuccessMessage('Account deleted successfully!');
                     setTimeout(() => {
                         window.location.href = 'login.html';

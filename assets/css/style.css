@@ -230,3 +230,151 @@ footer {
     from { transform: scale(0.8); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+
+/* ============================================================
+    SEARCH AUTO-COMPLETE
+    ============================================================ */
+
+/* --- Search Wrapper --- */
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-wrapper input {
+    padding: 8px 35px 8px 15px;
+    border: 3px solid #000000;
+    border-radius: 20px;
+    outline: none;
+    width: 180px;
+    transition: all 0.3s;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.search-wrapper input:focus {
+    width: 220px;
+    border-color: #ed5858;
+    box-shadow: 3px 3px 0px #f8c5ca;
+}
+
+/* --- Auto-complete Dropdown (DIPERKECIL) --- */
+.search-autocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 12px;
+    margin-top: 8px;
+    box-shadow: 4px 4px 0px #f8c5ca;
+    z-index: 1000;
+    display: none;
+    overflow: hidden;
+    max-height: 320px; /* Diperkecil dari 450px */
+    overflow-y: auto;
+    width: 280px; /* Lebar tetap, tidak melebar */
+    font-size: 13px;
+}
+
+.search-autocomplete.active {
+    display: block;
+}
+
+.autocomplete-section {
+    padding: 8px 12px; /* Diperkecil dari 12px 15px */
+    border-bottom: 1px solid #eee; /* Diperkecil dari 2px */
+}
+
+.autocomplete-section:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-section-title {
+    font-size: 9px; /* Diperkecil dari 11px */
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ed5858;
+    margin-bottom: 6px; /* Diperkecil dari 10px */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.autocomplete-section-title i {
+    font-size: 10px; /* Diperkecil dari 12px */
+}
+
+.autocomplete-item {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Diperkecil dari 12px */
+    padding: 6px 8px; /* Diperkecil dari 10px 12px */
+    border-radius: 8px; /* Diperkecil dari 10px */
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: #000000;
+    margin-bottom: 3px; /* Diperkecil dari 4px */
+    font-size: 12px; /* Tambahan */
+}
+
+.autocomplete-item:hover {
+    background: #fce8ea;
+    transform: translateX(4px); /* Diperkecil dari 6px */
+    border: 1px solid #000; /* Diperkecil dari 2px */
+    box-shadow: 2px 2px 0px #f8c5ca; /* Diperkecil dari 3px */
+}
+
+.autocomplete-item-icon {
+    width: 28px; /* Diperkecil dari 36px */
+    height: 28px; /* Diperkecil dari 36px */
+    background: #ed5858;
+    color: #fff;
+    border-radius: 8px; /* Diperkecil dari 10px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px; /* Diperkecil dari 14px */
+    flex-shrink: 0;
+    border: 1px solid #000; /* Diperkecil dari 2px */
+}
+
+.autocomplete-item-text {
+    font-size: 12px; /* Diperkecil dari 14px */
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.autocomplete-item-meta {
+    font-size: 10px; /* Diperkecil dari 12px */
+    color: #666;
+    margin-top: 2px; /* Diperkecil dari 3px */
+}
+
+/* Highlight text yang match */
+.autocomplete-highlight {
+    color: #ed5858;
+    font-weight: 800;
+    background: #fce8ea;
+    padding: 1px 2px; /* Diperkecil dari 1px 3px */
+    border-radius: 3px;
+}
+
+/* No results */
+.autocomplete-no-results {
+    padding: 15px; /* Diperkecil dari 25px */
+    text-align: center;
+    color: #666;
+    font-size: 12px; /* Diperkecil dari 14px */
+}
+
+.autocomplete-no-results i {
+    font-size: 20px; /* Diperkecil dari 28px */
+    color: #ccc;
+    margin-bottom: 6px; /* Diperkecil dari 10px */
+    display: block;
+}

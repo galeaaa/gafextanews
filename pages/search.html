@@ -28,15 +28,16 @@
                 <a href="category.html?cat=lifestyle">Lifestyle</a>
             </nav>
             <div class="search-profile">
-                <form action="search.html" method="GET" style="display: inline-block; margin: 0;">
-                    <div style="position: relative; display: flex; align-items: center;">
-                        <input type="text" name="q" id="search-input-nav" placeholder="Search news..." style="padding-right: 30px; border-radius: 20px; border: 2px solid #000; padding-left: 10px; height: 35px;">
-                        <button type="submit" style="position: absolute; right: 8px; background: none; border: none; cursor: pointer;">
-                            <i class="fas fa-search"></i>
-                        </button>
+                <!-- Search Box sama persis dashboard -->
+                <div class="search-wrapper" id="search-wrapper">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="search-input" placeholder="Search news..." autocomplete="off">
                     </div>
-                </form>
-                <a href="profile.html" style="text-decoration: none; color: inherit; margin-left: 10px; font-weight: bold; white-space: nowrap;">
+                    <!-- Auto-complete dropdown -->
+                    <div id="search-dropdown" class="search-dropdown"></div>
+                </div>
+                <a href="profile.html" class="profile-link">
                     <i class="fas fa-user-circle"></i> Profile
                 </a>
             </div>
@@ -44,12 +45,38 @@
     </header>
 
     <main class="container">
-        <h2 class="search-header-text">Search results for: <span id="search-query-display">...</span></h2>
+        <!-- Search Header dengan Info & Filter -->
+        <div class="search-info-bar" id="search-info-bar">
+            <div>
+                <h2 class="search-header-text">
+                    "<span class="search-query-highlight" id="search-query-display">...</span>" — 
+                    <span class="search-results-count" id="results-count">Loading...</span>
+                </h2>
+            </div>
+        </div>
 
+        <!-- Filter Chips -->
+        <div class="search-filters">
+            <button class="filter-chip active" data-filter="all">
+                <i class="fas fa-check"></i> All
+            </button>
+            <button class="filter-chip" data-filter="latest">
+                <i class="fas fa-clock"></i> Latest
+            </button>
+            <button class="filter-chip" data-filter="most-read">
+                <i class="fas fa-fire"></i> Most Read
+            </button>
+            <button class="filter-chip" data-filter="this-week">
+                <i class="fas fa-calendar-week"></i> This week
+            </button>
+        </div>
+
+        <!-- Headline Container -->
         <div id="search-headline-container">
             <div class="loading">Searching for top match...</div>
         </div>
 
+        <!-- List Articles -->
         <div class="latest-articles">
             <h3 class="more-articles-label">MORE ARTICLES</h3>
             <div id="search-results-grid" class="search-results-grid">

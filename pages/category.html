@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/category.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<base target="_blank">
 </head>
 <body>
     <header>
@@ -17,24 +18,24 @@
                 </a>
             </div>
             <nav>
-                <a href="../index.html">Home</a>
-                <a href="category.html?cat=politics">Politics</a>
-                <a href="category.html?cat=business">Business</a>
-                <a href="category.html?cat=economy">Economy</a>
-                <a href="category.html?cat=technology">Technology</a>
-                <a href="category.html?cat=culture">Culture</a>
-                <a href="category.html?cat=entertainment">Entertainment</a>
-                <a href="category.html?cat=lifestyle">Lifestyle</a>
+                <a href="../index.html" class="nav-link">Home</a>
+                <a href="category.html?cat=politics" class="nav-link">Politics</a>
+                <a href="category.html?cat=business" class="nav-link">Business</a>
+                <a href="category.html?cat=economy" class="nav-link">Economy</a>
+                <a href="category.html?cat=technology" class="nav-link">Technology</a>
+                <a href="category.html?cat=culture" class="nav-link">Culture</a>
+                <a href="category.html?cat=entertainment" class="nav-link">Entertainment</a>
+                <a href="category.html?cat=lifestyle" class="nav-link">Lifestyle</a>
             </nav>
             <div class="search-profile">
-                <form action="search.html" method="GET" class="search-form">
-                    <div class="search-wrapper">
-                        <input type="text" name="q" placeholder="Search news...">
-                        <button type="submit" class="search-btn">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
+                <!-- PERBAIKAN: Search dengan autocomplete -->
+                <div class="search-wrapper" id="search-wrapper">
+                    <input type="text" id="search-input" placeholder="Search news..." autocomplete="off">
+                    <button type="button" class="search-btn" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div class="search-autocomplete" id="search-autocomplete"></div>
+                </div>
                 <a href="profile.html" class="profile-link">
                     <i class="fas fa-user-circle"></i> Profile
                 </a>
@@ -43,8 +44,38 @@
     </header>
 
     <main class="container">
+        <!-- PERBAIKAN: Category Hero Header dengan ikon, info, dan sort -->
         <section class="category-header">
-            <h1 id="main-category-title">Loading Category...</h1>
+            <div class="category-header-left">
+                <div class="category-icon" id="category-hero-icon">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <div class="category-header-info">
+                    <h1 id="main-category-title">Loading Category...</h1>
+                    <div class="category-header-meta" id="category-article-count">
+                        <i class="fas fa-circle-notch fa-spin"></i> Loading articles...
+                    </div>
+                </div>
+            </div>
+            <!-- PERBAIKAN: Sort dropdown yang functional -->
+            <div class="category-sort-wrapper">
+                <button class="category-sort-btn" onclick="toggleSort()">
+                    <i class="fas fa-sliders-h"></i>
+                    <span id="sort-label">Sort Latest</span>
+                </button>
+                <div class="sort-dropdown" id="sort-dropdown">
+                    <div class="sort-dropdown-item" onclick="setSort('latest')">
+                        <i class="fas fa-clock"></i> Latest
+                    </div>
+                    <div class="sort-dropdown-item" onclick="setSort('oldest')">
+                        <i class="fas fa-history"></i> Oldest
+                    </div>
+                    <div class="sort-dropdown-divider"></div>
+                    <div class="sort-dropdown-item" onclick="setSort('popular')">
+                        <i class="fas fa-fire"></i> Popular
+                    </div>
+                </div>
+            </div>
         </section>
 
         <div id="category-sliders-container" class="main-grid-wrapper"></div>

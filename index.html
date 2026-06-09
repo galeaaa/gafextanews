@@ -8,9 +8,12 @@
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
+    <!-- HEADER & NAVBAR -->
     <header>
         <div class="top-nav">
             <div class="logo-area">
@@ -19,24 +22,23 @@
                 </a>
             </div>
             <nav>
-                <a href="index.html">For You</a>
-                <a href="pages/category.html?cat=politics">Politics</a>
-                <a href="pages/category.html?cat=business">Business</a>
-                <a href="pages/category.html?cat=economy">Economy</a>
-                <a href="pages/category.html?cat=technology">Technology</a>
-                <a href="pages/category.html?cat=culture">Culture</a>
-                <a href="pages/category.html?cat=entertainment">Entertainment</a>
-                <a href="pages/category.html?cat=lifestyle">Lifestyle</a>
+                <a href="index.html" class="nav-link active">For You</a>
+                <a href="pages/category.html?cat=politics" class="nav-link">Politics</a>
+                <a href="pages/category.html?cat=business" class="nav-link">Business</a>
+                <a href="pages/category.html?cat=economy" class="nav-link">Economy</a>
+                <a href="pages/category.html?cat=technology" class="nav-link">Technology</a>
+                <a href="pages/category.html?cat=culture" class="nav-link">Culture</a>
+                <a href="pages/category.html?cat=entertainment" class="nav-link">Entertainment</a>
+                <a href="pages/category.html?cat=lifestyle" class="nav-link">Lifestyle</a>
             </nav>
             <div class="search-profile">
-                <form action="pages/search.html" method="GET" class="search-form">
-                    <div class="search-wrapper">
-                        <input type="text" name="q" id="search-input" placeholder="Search news...">
-                        <button type="submit" class="search-btn">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
+                <div class="search-wrapper" id="search-wrapper">
+                    <input type="text" id="search-input" placeholder="Search news..." autocomplete="off">
+                    <button type="button" class="search-btn" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div class="search-autocomplete" id="search-autocomplete"></div>
+                </div>
                 <a href="pages/profile.html" class="profile-link">
                     <i class="fas fa-user-circle"></i> Profile
                 </a>
@@ -44,15 +46,50 @@
         </div>
     </header>
 
+    <!-- BREAKING NEWS TICKER -->
+    <div class="breaking-news-bar">
+        <span class="breaking-badge">Breaking</span>
+        <div class="ticker-wrapper">
+            <div class="ticker-track" id="ticker-track">
+                <span class="ticker-item">Loading latest headlines...</span>
+            </div>
+        </div>
+    </div>
+
     <main class="container">
         <section class="headline-section">
             <div id="headline-container" class="headline-big">
                 <div class="loading">Loading Top Stories...</div>
             </div>
-            
-            <div class="trending-section">
-                <h3 onclick="handleCommentClick()" style="cursor: pointer;">COMMENTS</h3>
-                <div id="trending-list" class="netflix-slider"></div>
+
+            <!-- PERBAIKAN: Comments section di dalam headline card -->
+            <div class="comments-section-collapsible" id="comments-section">
+                <div class="comments-header" onclick="handleCommentsClick()">
+                    <div class="comments-header-left">
+                        <i class="far fa-comment-dots"></i>
+                        <span class="comments-label">Comments</span>
+                        <span class="comments-count-badge" id="comments-count">0</span>
+                    </div>
+                    <div class="comments-header-right">
+                        <i class="fas fa-chevron-down" id="comments-toggle-icon"></i>
+                    </div>
+                </div>
+                <div class="comments-body" id="comments-body">
+                    <div class="comments-list" id="comments-list">
+                        <div class="comments-empty-state" id="comments-empty">
+                            <i class="far fa-comments"></i>
+                            <p>No comments yet. Be the first to share your thoughts!</p>
+                        </div>
+                    </div>
+                    <div class="comments-input-area">
+                        <div class="comments-input-wrapper">
+                            <input type="text" id="comment-input" placeholder="Write a message..." autocomplete="off">
+                            <button class="comment-send-btn" onclick="handleCommentSubmit()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -73,24 +110,24 @@
         <div class="category-section full-width-category">
             <h3>POPULAR CATEGORIES</h3>
             <div class="tags">
-                <span onclick="location.href='pages/category.html?cat=world'">World</span>
-                <span onclick="location.href='pages/category.html?cat=politics'">Politics</span> 
-                <span onclick="location.href='pages/category.html?cat=science'">Science</span>
-                <span onclick="location.href='pages/category.html?cat=environment'">Environment</span>
-                <span onclick="location.href='pages/category.html?cat=health'">Health</span>
-                <span onclick="location.href='pages/category.html?cat=business'">Business</span>
-                <span onclick="location.href='pages/category.html?cat=finance'">Finance</span> 
-                <span onclick="location.href='pages/category.html?cat=culture'">Culture</span>
-                <span onclick="location.href='pages/category.html?cat=tech'">Technology</span>
-                <span onclick="location.href='pages/category.html?cat=crime'">Crime</span>
-                <span onclick="location.href='pages/category.html?cat=lifestyle'">Lifestyle</span>
-                <span onclick="location.href='pages/category.html?cat=law'">Law</span>
-                <span onclick="location.href='pages/category.html?cat=education'">Education</span>
-                <span onclick="location.href='pages/category.html?cat=fashion'">Fashion</span>
-                <span onclick="location.href='pages/category.html?cat=music'">Music</span>
-                <span onclick="location.href='pages/category.html?cat=travel'">Travel</span>
-                <span onclick="location.href='pages/category.html?cat=food'">Food</span>
-                <span onclick="location.href='pages/category.html?cat=sport'">Sport</span>
+                <span onclick="location.href='pages/category.html?cat=world'"><i class="fas fa-globe cat-icon"></i> World</span>
+                <span onclick="location.href='pages/category.html?cat=politics'"><i class="fas fa-landmark cat-icon"></i> Politics</span>
+                <span onclick="location.href='pages/category.html?cat=science'"><i class="fas fa-flask cat-icon"></i> Science</span>
+                <span onclick="location.href='pages/category.html?cat=environment'"><i class="fas fa-leaf cat-icon"></i> Environment</span>
+                <span onclick="location.href='pages/category.html?cat=health'"><i class="fas fa-heart-pulse cat-icon"></i> Health</span>
+                <span onclick="location.href='pages/category.html?cat=business'"><i class="fas fa-briefcase cat-icon"></i> Business</span>
+                <span onclick="location.href='pages/category.html?cat=finance'"><i class="fas fa-coins cat-icon"></i> Finance</span>
+                <span onclick="location.href='pages/category.html?cat=culture'"><i class="fas fa-palette cat-icon"></i> Culture</span>
+                <span onclick="location.href='pages/category.html?cat=technology'"><i class="fas fa-microchip cat-icon"></i> Technology</span>
+                <span onclick="location.href='pages/category.html?cat=crime'"><i class="fas fa-gavel cat-icon"></i> Crime</span>
+                <span onclick="location.href='pages/category.html?cat=lifestyle'"><i class="fas fa-heart cat-icon"></i> Lifestyle</span>
+                <span onclick="location.href='pages/category.html?cat=law'"><i class="fas fa-scale-balanced cat-icon"></i> Law</span>
+                <span onclick="location.href='pages/category.html?cat=education'"><i class="fas fa-graduation-cap cat-icon"></i> Education</span>
+                <span onclick="location.href='pages/category.html?cat=fashion'"><i class="fas fa-shirt cat-icon"></i> Fashion</span>
+                <span onclick="location.href='pages/category.html?cat=music'"><i class="fas fa-music cat-icon"></i> Music</span>
+                <span onclick="location.href='pages/category.html?cat=travel'"><i class="fas fa-plane cat-icon"></i> Travel</span>
+                <span onclick="location.href='pages/category.html?cat=food'"><i class="fas fa-utensils cat-icon"></i> Food</span>
+                <span onclick="location.href='pages/category.html?cat=sport'"><i class="fas fa-futbol cat-icon"></i> Sport</span>
             </div>
         </div>
     </main>
@@ -150,22 +187,163 @@
         </div>
     </div>
 
+    <div id="bookmark-toast" class="bookmark-toast">
+        <i class="fas fa-bookmark"></i> <span id="bookmark-toast-msg">Article saved!</span>
+    </div>
+
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/comment.js"></script>
     <script src="assets/js/script.js"></script>
     <script>
-        // PERBAIKAN: Ditambahkan pengecekan jika fungsi isUserLoggedIn belum siap/tidak terbaca
         function isUserLoggedIn() {
             return localStorage.getItem('user_token') !== null || sessionStorage.getItem('user_token') !== null;
         }
 
-        function handleCommentClick() {
-            if (isUserLoggedIn()) {
-                showAlert("Anda sudah login. Silakan klik berita untuk melihat komentar.");
+        // PERBAIKAN: Track apakah user sudah buka berita
+        let hasOpenedArticle = false;
+        let currentArticleId = null;
+
+        // PERBAIKAN: Cek dulu apakah user sudah buka berita sebelum bisa lihat komen
+        function handleCommentsClick() {
+            if (!hasOpenedArticle) {
+                showAlert("Please click on a news article first to view its comments.");
+                return;
+            }
+            toggleCommentsSection();
+        }
+
+        function toggleCommentsSection() {
+            const commentsSection = document.getElementById('comments-section');
+            const toggleIcon = document.getElementById('comments-toggle-icon');
+
+            if (commentsSection.classList.contains('expanded')) {
+                commentsSection.classList.remove('expanded');
+                toggleIcon.style.transform = 'rotate(0deg)';
             } else {
-                document.getElementById('loginModal').style.display = 'flex';
+                commentsSection.classList.add('expanded');
+                toggleIcon.style.transform = 'rotate(180deg)';
             }
         }
+
+        // PERBAIKAN: Load comments count dari storage untuk artikel saat ini
+        function loadCommentsCount(articleId) {
+            const comments = JSON.parse(localStorage.getItem('comments_' + articleId)) || [];
+            const countBadge = document.getElementById('comments-count');
+            if (countBadge) {
+                countBadge.textContent = comments.length;
+            }
+            return comments;
+        }
+
+        // PERBAIKAN: Load comments list dari storage
+        function loadCommentsList(articleId) {
+            const comments = JSON.parse(localStorage.getItem('comments_' + articleId)) || [];
+            const commentsList = document.getElementById('comments-list');
+            const emptyState = document.getElementById('comments-empty');
+
+            if (!commentsList) return;
+
+            // Clear existing comments (keep empty state)
+            const existingItems = commentsList.querySelectorAll('.comment-item');
+            existingItems.forEach(item => item.remove());
+
+            if (comments.length === 0) {
+                if (emptyState) emptyState.style.display = 'flex';
+            } else {
+                if (emptyState) emptyState.style.display = 'none';
+                comments.forEach(comment => {
+                    const commentEl = document.createElement('div');
+                    commentEl.className = 'comment-item';
+                    commentEl.innerHTML = `
+                        <div class="comment-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-author">${comment.author}</div>
+                            <div class="comment-text">${comment.text}</div>
+                            <div class="comment-meta">
+                                <span>${comment.time}</span>
+                                <span class="comment-reply-btn">Reply</span>
+                            </div>
+                        </div>
+                    `;
+                    commentsList.appendChild(commentEl);
+                });
+            }
+        }
+
+        function handleCommentSubmit() {
+            if (!isUserLoggedIn()) {
+                document.getElementById('loginModal').style.display = 'flex';
+                return;
+            }
+
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            // Sembunyikan empty state
+            const emptyState = document.getElementById('comments-empty');
+            if (emptyState) emptyState.style.display = 'none';
+
+            // Add new comment to DOM
+            const commentsList = document.getElementById('comments-list');
+            const newComment = document.createElement('div');
+            newComment.className = 'comment-item';
+            newComment.innerHTML = `
+                <div class="comment-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="comment-content">
+                    <div class="comment-author">You</div>
+                    <div class="comment-text">${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                    <div class="comment-meta">
+                        <span>Just now</span>
+                        <span class="comment-reply-btn">Reply</span>
+                    </div>
+                </div>
+            `;
+            commentsList.appendChild(newComment);
+            input.value = '';
+
+            // Update count badge
+            const countBadge = document.getElementById('comments-count');
+            const currentCount = parseInt(countBadge.textContent) || 0;
+            countBadge.textContent = currentCount + 1;
+
+            // Save to localStorage
+            const articleId = currentArticleId || 'headline';
+            let savedComments = JSON.parse(localStorage.getItem('comments_' + articleId)) || [];
+            savedComments.push({
+                author: 'You',
+                text: text.replace(/</g, '&lt;').replace(/>/g, '&gt;'),
+                time: 'Just now'
+            });
+            localStorage.setItem('comments_' + articleId, JSON.stringify(savedComments));
+
+            // Scroll to bottom
+            commentsList.scrollTop = commentsList.scrollHeight;
+        }
+
+        // PERBAIKAN: Set article as opened when clicking on headline
+        function markArticleOpened(articleId) {
+            hasOpenedArticle = true;
+            currentArticleId = articleId || 'headline';
+            loadCommentsCount(currentArticleId);
+            loadCommentsList(currentArticleId);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const commentInput = document.getElementById('comment-input');
+            if (commentInput) {
+                commentInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        handleCommentSubmit();
+                    }
+                });
+            }
+        });
 
         function saveAndGoToLogin() {
             sessionStorage.setItem('lastVisitedPage', window.location.href);
