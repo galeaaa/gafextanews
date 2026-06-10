@@ -11,7 +11,6 @@
     <style>
         .comment-display-area { color: #000 !important; }
         .comment-item p { color: #000 !important; margin: 5px 0; }
-        /* FIX VIDEO KELUAR FRAME */
         .news-body-text iframe,
         .news-body-text video,
         .news-body-text embed,
@@ -37,7 +36,6 @@
             display: block;
         }
     </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -128,7 +126,6 @@
                 </div>
             </div>
 
-            <!-- READ ALSO SECTION -->
             <div class="more-news-grid-container">
                 <div class="section-header-bar">
                     <h3 class="grid-section-title">Read Also</h3>
@@ -199,6 +196,10 @@
             </div>
         </div>
     </div>
+
+    <!-- FIREBASE SDK - TAMBAHIN INI -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/comment.js"></script>
@@ -462,7 +463,10 @@
             });
         }
 
-        function renderCommentSection() {
+        // ============================================
+        // RENDER COMMENT SECTION - pakai comment.js
+        // ============================================
+        async function renderCommentSection() {
             const container = document.getElementById('comment-form-container');
             if (isUserLoggedIn()) {
                 container.innerHTML = `
@@ -478,55 +482,9 @@
                     charCount.textContent = this.value.length + ' / 500';
                 });
             }
-            loadComments(articleId);
-        }
-
-        function loadComments(articleId) {
-            const comments = JSON.parse(localStorage.getItem('comments_' + articleId)) || [];
-            const commentList = document.getElementById('comment-list');
-            const countBadge = document.getElementById('comment-count');
-            countBadge.textContent = comments.length + ' komentar';
-
-            if (comments.length === 0) {
-                commentList.innerHTML = `
-                    <div class="comment-empty-state">
-                        <i class="far fa-comment-dots"></i>
-                        <p>Belum ada komentar. Jadilah yang pertama!</p>
-                    </div>
-                `;
-            } else {
-                commentList.innerHTML = comments.map(comment => `
-                    <div class="comment-item">
-                        <div class="comment-avatar">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <div class="comment-content">
-                            <div class="comment-author">${comment.author}</div>
-                            <div class="comment-text">${comment.text}</div>
-                            <div class="comment-meta">
-                                <span>${comment.time}</span>
-                                <span class="comment-reply-btn">Reply</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function postComment(articleId) {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if (!text) return;
-            const comments = JSON.parse(localStorage.getItem('comments_' + articleId)) || [];
-            comments.push({
-                author: 'You',
-                text: text.replace(/</g, '&lt;').replace(/>/g, '&gt;'),
-                time: 'Just now'
-            });
-            localStorage.setItem('comments_' + articleId, JSON.stringify(comments));
-            input.value = '';
-            document.querySelector('.comment-char-count').textContent = '0 / 500';
-            loadComments(articleId);
+            // Panggil dari comment.js (Firebase)
+            await loadComments(articleId);
+            startAutoRefresh(articleId);
         }
 
         function shareCurrentArticle() {
@@ -649,7 +607,6 @@
             const dropdown = document.getElementById('search-autocomplete');
             if (!searchInput) return;
 
-            // HAPUS class active dari JS - biarkan CSS :focus handle semua (sama kaya dashboard)
             searchInput.addEventListener('focus', () => {
                 const query = searchInput.value.trim();
                 if (query.length >= 2) renderAutocomplete(query);
