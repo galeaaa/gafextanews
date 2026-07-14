@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>GafextaNews - Profile</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+</head>
+<body>
+
+    <div class="bg-grid-overlay"></div>
+
+    <div class="glass-bg">
+        <nav class="top-nav-profile">
+            <button onclick="history.back()" class="btn-back-glass">
+                <i class="fas fa-chevron-left"></i> Back
+            </button>
+        </nav>
+
+        <div class="profile-wrapper">
+            
+            <aside class="profile-sidebar">
+                <div class="sidebar-user-zone">
+                    <div class="main-avatar" id="sidebar-avatar" onclick="document.getElementById('input-file-sidebar').click()" style="overflow: hidden; display: flex; align-items: center; justify-content: center; background: #ed5858;">
+                        <span class="avatar-letter-sync" id="sidebar-avatar-letter">G</span>
+                        <img class="display-avatar-sync" id="sidebar-avatar-img" src="" alt="Profile" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <input type="file" id="input-file-sidebar" accept="image/*" hidden>
+                    <h2 class="username-text-sync" id="sidebar-username">User</h2>
+                    <p class="email-masked-sync" id="sidebar-email">user@example.com</p>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <div class="menu-link active" onclick="switchSection('profile-section', this)">
+                        <i class="fas fa-user"></i> Profile
+                    </div>
+                    <div class="menu-link" onclick="switchSection('history-section', this)">
+                        <i class="fas fa-book-open"></i> Reading History
+                    </div>
+                    <div class="menu-link" onclick="switchSection('saved-news-section', this)">
+                        <i class="fas fa-bookmark"></i> Saved News
+                    </div>
+                    <div class="menu-link" onclick="switchSection('notifications-section', this)">
+                        <i class="fas fa-bell"></i> Notifications
+                    </div>
+                    <div class="menu-link" onclick="switchSection('settings-section', this)">
+                        <i class="fas fa-cog"></i> Settings
+                    </div>
+                    <button class="sidebar-logout-btn" onclick="logoutUser()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </nav>
+            </aside>
+
+            <main class="profile-content-area">
+                
+                <div id="profile-section" class="content-section active">
+                    <div class="glass-card profile-detail-card">
+                        <!-- Profile Photo Center -->
+                        <div class="profile-avatar-center">
+                            <div class="large-avatar-center" id="avatar-wrapper" onclick="document.getElementById('input-file').click()">
+                                <span id="avatar-letter">G</span>
+                                <img id="display-avatar" src="" alt="Profile" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <label for="input-file" class="change-photo-text-center">
+                                <i class="fas fa-camera"></i> Change Photo
+                            </label>
+                            <input type="file" id="input-file" accept="image/*" hidden>
+                        </div>
+
+                        <!-- Username and Email -->
+                        <div class="profile-user-info-center">
+                            <h2 id="profile-fullname">User</h2>
+                            <p class="username-tag-center">@<span id="profile-username">User</span></p>
+                            <p class="email-text-center"><i class="fas fa-envelope"></i> <span id="profile-email-masked">user@example.com</span></p>
+                        </div>
+
+                        <!-- Edit Profile Button -->
+                        <div class="profile-edit-btn-wrapper">
+                            <button class="btn-edit-profile" onclick="openInlineEdit()">
+                                <i class="fas fa-user-edit"></i> Edit Profile
+                            </button>
+                        </div>
+
+                        <!-- Inline Edit Form -->
+                        <div id="inline-edit-form" class="inline-edit-form" style="display: none;">
+                            <h3><i class="fas fa-edit"></i> Edit Profile</h3>
+                            
+                            <div class="form-group-inline">
+                                <label><i class="fas fa-user"></i> Username</label>
+                                <input type="text" id="edit-username-inline" placeholder="Enter username">
+                                <small id="username-error" class="error-message"></small>
+                            </div>
+                            
+                            <div class="form-group-inline">
+                                <label><i class="fas fa-pen"></i> Bio</label>
+                                <textarea id="edit-bio-inline" rows="3" placeholder="Write your short bio..."></textarea>
+                            </div>
+
+                            <div class="form-group-inline">
+                                <label><i class="fas fa-venus-mars"></i> Gender</label>
+                                <select id="edit-gender-inline">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Prefer not to say">Prefer not to say</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group-inline">
+                                <label><i class="fas fa-birthday-cake"></i> Birthday</label>
+                                <input type="date" id="edit-birthdate-inline">
+                            </div>
+
+                            <div class="form-group-inline">
+                                <label><i class="fas fa-briefcase"></i> Occupation</label>
+                                <input type="text" id="edit-occupation-inline" placeholder="e.g., Software Engineer, Student, Designer">
+                            </div>
+
+                            <div class="form-group-inline">
+                                <label><i class="fas fa-heart"></i> Hobbies</label>
+                                <input type="text" id="edit-hobbies-inline" placeholder="e.g., Reading, Gaming, Traveling">
+                            </div>
+
+                            <div class="inline-edit-footer">
+                                <button class="btn-cancel-inline" onclick="closeInlineEdit()">Cancel</button>
+                                <button class="btn-save-inline" onclick="saveInlineChanges()">Save Changes</button>
+                            </div>
+                        </div>
+
+                        <!-- Display Information -->
+                        <div id="profile-additional-info" class="profile-additional-info">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <i class="fas fa-venus-mars"></i>
+                                    <div>
+                                        <label>Gender</label>
+                                        <p id="profile-gender">-</p>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <div>
+                                        <label>Birthday</label>
+                                        <p id="profile-birthdate">-</p>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <div>
+                                        <label>Occupation</label>
+                                        <p id="profile-occupation">-</p>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-heart"></i>
+                                    <div>
+                                        <label>Hobbies</label>
+                                        <p id="profile-hobbies">-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bio-section-inline">
+                                <label><i class="fas fa-pen"></i> Bio</label>
+                                <p id="profile-bio">-</p>
+                            </div>
+
+                            <div class="join-date-section">
+                                <label><i class="fas fa-calendar-check"></i> Member Since</label>
+                                <p id="profile-joindate">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="history-section" class="content-section">
+                    <div class="profile-menu-grid" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-history"></i> Recent News History</div>
+                            <div id="news-history-list" class="mini-list">
+                                <p class="empty-status">No reading history yet.</p>
+                            </div>
+                        </div>
+
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-search"></i> Recent Search History</div>
+                            <div id="search-history-list" class="mini-list">
+                                <p class="empty-status">No search history yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="saved-news-section" class="content-section">
+                    <div class="profile-menu-grid" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-bookmark"></i> Saved Articles</div>
+                            <div id="saved-news-list" class="mini-list">
+                                <p class="empty-status">No saved articles yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="notifications-section" class="content-section">
+                    <div class="profile-menu-grid" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-bell"></i> Notification Center</div>
+                            <div class="mini-list" style="gap: 15px;">
+                                
+                                <div class="notification-box-item with-toggle">
+                                    <div class="notification-icon-side"><i class="fas fa-bolt"></i></div>
+                                    <div class="notification-body-side">
+                                        <h4>Breaking News</h4>
+                                        <p>Get instant notifications for important breaking news updates.</p>
+                                    </div>
+                                    <div class="notification-toggle">
+                                        <label class="switch-notif">
+                                            <input type="checkbox" id="notif-breaking" checked>
+                                            <span class="slider-notif round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="notification-box-item with-toggle">
+                                    <div class="notification-icon-side"><i class="fas fa-heart"></i></div>
+                                    <div class="notification-body-side">
+                                        <h4>Favorite Category Update</h4>
+                                        <p>Get notified when new articles are added to your favorite categories.</p>
+                                    </div>
+                                    <div class="notification-toggle">
+                                        <label class="switch-notif">
+                                            <input type="checkbox" id="notif-favorite" checked>
+                                            <span class="slider-notif round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="notification-box-item with-toggle">
+                                    <div class="notification-icon-side"><i class="fas fa-comment-dots"></i></div>
+                                    <div class="notification-body-side">
+                                        <h4>Comment Reply</h4>
+                                        <p>Get notified when someone replies to your comment.</p>
+                                    </div>
+                                    <div class="notification-toggle">
+                                        <label class="switch-notif">
+                                            <input type="checkbox" id="notif-comment" checked>
+                                            <span class="slider-notif round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="notification-box-item with-toggle">
+                                    <div class="notification-icon-side"><i class="fas fa-cogs"></i></div>
+                                    <div class="notification-body-side">
+                                        <h4>System Notification</h4>
+                                        <p>Receive important updates about system maintenance and new features.</p>
+                                    </div>
+                                    <div class="notification-toggle">
+                                        <label class="switch-notif">
+                                            <input type="checkbox" id="notif-system" checked>
+                                            <span class="slider-notif round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="notification-box-item with-toggle">
+                                    <div class="notification-icon-side"><i class="fas fa-envelope"></i></div>
+                                    <div class="notification-body-side">
+                                        <h4>Email Digest</h4>
+                                        <p>Receive weekly email digest of top news and personalized recommendations.</p>
+                                    </div>
+                                    <div class="notification-toggle">
+                                        <label class="switch-notif">
+                                            <input type="checkbox" id="notif-email">
+                                            <span class="slider-notif round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="notification-box-item with-toggle">
+                                    <div class="notification-icon-side"><i class="fas fa-newspaper"></i></div>
+                                    <div class="notification-body-side">
+                                        <h4>Daily Briefing</h4>
+                                        <p>Get daily morning briefing with top stories.</p>
+                                    </div>
+                                    <div class="notification-toggle">
+                                        <label class="switch-notif">
+                                            <input type="checkbox" id="notif-daily" checked>
+                                            <span class="slider-notif round"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settings-section" class="content-section">
+                    <div class="profile-menu-grid" style="display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <!-- Appearance Settings -->
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-palette"></i> Appearance</div>
+                            <div class="settings-list">
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-moon"></i>
+                                        <div>
+                                            <h4>Dark Mode</h4>
+                                            <p>Switch between light and dark theme</p>
+                                        </div>
+                                    </div>
+                                    <label class="switch-notif">
+                                        <input type="checkbox" id="dark-mode-toggle">
+                                        <span class="slider-notif round"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-font"></i>
+                                        <div>
+                                            <h4>Font Size</h4>
+                                            <p>Adjust text size for better reading</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-size-selector">
+                                        <button class="font-size-btn" onclick="decreaseFontSize()">A-</button>
+                                        <span id="font-size-value" class="font-size-value">Medium</span>
+                                        <button class="font-size-btn" onclick="increaseFontSize()">A+</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-language"></i>
+                                        <div>
+                                            <h4>Language</h4>
+                                            <p>Choose your preferred language</p>
+                                        </div>
+                                    </div>
+                                    <select id="language-select" class="settings-select">
+                                        <option value="en">English</option>
+                                        <option value="id">Bahasa Indonesia</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                        <!-- Content Preferences -->
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-newspaper"></i> Content Preferences</div>
+                            <div class="settings-list">
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-tag"></i>
+                                        <div>
+                                            <h4>Preferred Categories</h4>
+                                            <p>Select news categories you're interested in</p>
+                                        </div>
+                                    </div>
+                                    <button class="settings-btn" onclick="openCategoryModal()">Manage</button>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-eye"></i>
+                                        <div>
+                                            <h4>Auto-play Videos</h4>
+                                            <p>Automatically play videos in articles</p>
+                                        </div>
+                                    </div>
+                                    <label class="switch-notif">
+                                        <input type="checkbox" id="autoplay-toggle" checked>
+                                        <span class="slider-notif round"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-image"></i>
+                                        <div>
+                                            <h4>Load Images</h4>
+                                            <p>Show images in articles (uses more data)</p>
+                                        </div>
+                                    </div>
+                                    <label class="switch-notif">
+                                        <input type="checkbox" id="load-images-toggle" checked>
+                                        <span class="slider-notif round"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-bookmark"></i>
+                                        <div>
+                                            <h4>Save Reading Progress</h4>
+                                            <p>Remember where you left off reading</p>
+                                        </div>
+                                    </div>
+                                    <label class="switch-notif">
+                                        <input type="checkbox" id="save-progress-toggle" checked>
+                                        <span class="slider-notif round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Privacy & Security -->
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-shield-alt"></i> Privacy & Security</div>
+                            <div class="settings-list">
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-history"></i>
+                                        <div>
+                                            <h4>Clear Reading History</h4>
+                                            <p>Remove all your reading history</p>
+                                        </div>
+                                    </div>
+                                    <button class="settings-btn danger" onclick="clearHistory()">Clear</button>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-search"></i>
+                                        <div>
+                                            <h4>Clear Search History</h4>
+                                            <p>Remove all your search history</p>
+                                        </div>
+                                    </div>
+                                    <button class="settings-btn danger" onclick="clearSearchHistory()">Clear</button>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-database"></i>
+                                        <div>
+                                            <h4>Data Saver Mode</h4>
+                                            <p>Reduce data usage by compressing images</p>
+                                        </div>
+                                    </div>
+                                    <label class="switch-notif">
+                                        <input type="checkbox" id="data-saver-toggle">
+                                        <span class="slider-notif round"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <div>
+                                            <h4>Delete Account</h4>
+                                            <p>Permanently delete your account and all data</p>
+                                        </div>
+                                    </div>
+                                    <button class="settings-btn danger" onclick="deleteAccount()">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- About -->
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-info-circle"></i> About</div>
+                            <div class="settings-list">
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-code-branch"></i>
+                                        <div>
+                                            <h4>Version</h4>
+                                            <p>GafextaNews v2.4.0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-star"></i>
+                                        <div>
+                                            <h4>Rate App</h4>
+                                            <p>Rate us on the app store</p>
+                                        </div>
+                                    </div>
+                                    <button class="settings-btn" onclick="rateApp()">Rate</button>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-question-circle"></i>
+                                        <div>
+                                            <h4>Help Center</h4>
+                                            <p>FAQs and support</p>
+                                        </div>
+                                    </div>
+                                    <button class="settings-btn" onclick="helpCenter()">Open</button>
+                                </div>
+                                
+                                <div class="settings-item">
+                                    <div class="settings-item-left">
+                                        <i class="fas fa-file-alt"></i>
+                                        <div>
+                                            <h4>Terms & Privacy</h4>
+                                            <p>Read our terms and privacy policy</p>
+                                        </div>
+                                    </div>
+                                    <button class="settings-btn" onclick="openTerms()">View</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </main>
+            
+        </div>
+    </div>
+
+    <!-- Crop Modal -->
+    <div id="crop-modal" class="crop-modal">
+        <div class="crop-container">
+            <h3><i class="fas fa-crop-alt"></i> Adjust Profile Photo</h3>
+            <div class="crop-wrapper">
+                <img id="image-to-crop" src="">
+            </div>
+            <div class="crop-footer">
+                <button class="crop-btn" onclick="saveCroppedImage()"><i class="fas fa-check"></i> Save Photo</button>
+                <button class="btn-cancel" onclick="closeCropModal()"><i class="fas fa-times"></i> Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup-akun" class="popup-overlay">
+        <div class="popup-content glass-card">
+            <h2><i class="fas fa-id-card"></i> Account Details</h2>
+            <div class="info-row">
+                <label>Email</label>
+                <p id="full-email">user@example.com</p>
+            </div>
+            <div class="info-row">
+                <label>Password</label>
+                <p>••••••••</p>
+            </div>
+            <button class="close-popup" onclick="togglePopup('popup-akun')">Close</button>
+        </div>
+    </div>
+
+    <!-- Delete Account Confirmation Modal -->
+    <div id="delete-confirm-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); align-items: center; justify-content: center; z-index: 99999;">
+        <div class="modal-box-solid" style="background: #ffffff; color: #192853; border-radius: 12px; width: 90%; max-width: 400px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.25); text-align: center; font-family: 'Inter', -apple-system, sans-serif; border: 1px solid #e5e7eb; box-sizing: border-box;">
+            <div style="font-size: 54px; margin-bottom: 16px; color: #ef4444; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+            <h3 style="font-size: 22px; font-weight: 700; margin: 0 0 8px 0; color: #192853; background: none; border: none; padding: 0; text-transform: none; display: block;">Hapus Akun</h3>
+            <p style="font-size: 14px; line-height: 1.5; color: #4b5563; margin: 0 0 15px 0;">Tindakan ini akan menghapus akun Anda secara permanen. Ketik <strong>"DELETE"</strong> di bawah untuk mengonfirmasi:</p>
+            <input type="text" id="delete-confirm-input" placeholder="Ketik DELETE di sini" style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; margin-bottom: 20px; font-size: 14px; box-sizing: border-box; text-align: center; outline: none; color: #192853; font-weight: 600;">
+            <span id="delete-error-msg" style="color: #ef4444; font-size: 13px; display: block; margin-top: -15px; margin-bottom: 15px; font-weight: 600;"></span>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closeDeleteModal()" style="background: #e5e7eb; color: #374151; border: none; padding: 12px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; flex: 1; outline: none; box-sizing: border-box;">Batal</button>
+                <button onclick="submitDeleteAccount()" style="background: #ef4444; color: #ffffff; border: none; padding: 12px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; flex: 1; outline: none; box-sizing: border-box;">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="category-modal" class="category-modal" style="display: none;">
+        <div class="category-modal-content">
+            <div class="category-modal-header">
+                <h3><i class="fas fa-tag"></i> Preferred Categories</h3>
+                <button class="close-category" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            <div class="category-list">
+                <div class="category-option">
+                    <input type="checkbox" id="cat-technology" value="Technology">
+                    <label for="cat-technology"><i class="fas fa-microchip"></i> Technology</label>
+                </div>
+                <div class="category-option">
+                    <input type="checkbox" id="cat-business" value="Business">
+                    <label for="cat-business"><i class="fas fa-chart-line"></i> Business</label>
+                </div>
+                <div class="category-option">
+                    <input type="checkbox" id="cat-sports" value="Sport">
+                    <label for="cat-sports"><i class="fas fa-futbol"></i> Sports</label>
+                </div>
+                <div class="category-option">
+                    <input type="checkbox" id="cat-entertainment" value="Entertainment">
+                    <label for="cat-entertainment"><i class="fas fa-film"></i> Entertainment</label>
+                </div>
+                <div class="category-option">
+                    <input type="checkbox" id="cat-health" value="Health">
+                    <label for="cat-health"><i class="fas fa-heartbeat"></i> Health</label>
+                </div>
+                <div class="category-option">
+                    <input type="checkbox" id="cat-science" value="Science">
+                    <label for="cat-science"><i class="fas fa-flask"></i> Science</label>
+                </div>
+                <div class="category-option">
+                    <input type="checkbox" id="cat-politics" value="Politics">
+                    <label for="cat-politics"><i class="fas fa-landmark"></i> Politics</label>
+                </div>
+                <div class="category-option">
+                    <input type="checkbox" id="cat-lifestyle" value="Lifestyle">
+                    <label for="cat-lifestyle"><i class="fas fa-heart"></i> Lifestyle</label>
+                </div>
+            </div>
+            <div class="category-modal-footer">
+                <button class="category-save-btn" onclick="saveCategories()">Save Preferences</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cropper;
+        let currentFileInput = null;
+        
+        const inputFile = document.getElementById("input-file");
+        const inputFileSidebar = document.getElementById("input-file-sidebar");
+        const imgDisplay = document.getElementById("display-avatar");
+        const letterDisplay = document.getElementById("avatar-letter");
+        const sidebarImgDisplay = document.getElementById("sidebar-avatar-img");
+        const sidebarLetterDisplay = document.getElementById("sidebar-avatar-letter");
+        const cropModal = document.getElementById("crop-modal");
+        const imageToCrop = document.getElementById("image-to-crop");
+
+        const categories = [
+            { id: "technology", name: "Technology", icon: "💻" },
+            { id: "business", name: "Business", icon: "📈" },
+            { id: "sports", name: "Sports", icon: "⚽" },
+            { id: "entertainment", name: "Entertainment", icon: "🎬" },
+            { id: "health", name: "Health", icon: "❤️" },
+            { id: "science", name: "Science", icon: "🔬" },
+            { id: "politics", name: "Politics", icon: "🏛️" },
+            { id: "lifestyle", name: "Lifestyle", icon: "🌟" }
+        ];
+
+        // ==================== PROTECT PAGE ====================
+        // Redirect ke login kalau belum login
+        (function protectPage() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = '/login';
+                return;
+            }
+        })();
+
+        function switchSection(sectionId, element) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            element.classList.add('active');
+            
+            closeInlineEdit();
+
+            if (sectionId === 'saved-news-section') {
+                loadSavedArticles();
+            }
+        }
+
+        function loadUserData() {
+            const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!loggedInUser) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            const username = loggedInUser.username || "User";
+            const email = loggedInUser.email || "user@example.com";
+            const bio = loggedInUser.bio || "-";
+            const joinDate = loggedInUser.joinDate || new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+            const gender = loggedInUser.gender || "-";
+            const birthdate = loggedInUser.birthdate || "";
+            const occupation = loggedInUser.occupation || "-";
+            const hobbies = loggedInUser.hobbies || "-";
+            
+            // Update username everywhere
+            document.getElementById('profile-username').innerText = username;
+            document.getElementById('profile-fullname').innerText = username;
+            document.getElementById('sidebar-username').innerText = username;
+            document.querySelectorAll('.username-text-sync').forEach(el => el.innerText = username);
+            
+            // Update bio
+            document.getElementById('profile-bio').innerText = bio;
+            
+            // Update join date
+            document.getElementById('profile-joindate').innerHTML = '<i class="fas fa-calendar-alt"></i> ' + joinDate;
+            
+            // Update additional info
+            document.getElementById('profile-gender').innerText = gender;
+            document.getElementById('profile-birthdate').innerText = birthdate ? formatDate(birthdate) : "-";
+            document.getElementById('profile-occupation').innerText = occupation;
+            document.getElementById('profile-hobbies').innerText = hobbies;
+            
+            // Update email
+            document.getElementById('full-email').innerText = email;
+            const emailParts = email.split("@");
+            const masked = emailParts[0].substring(0, 2) + "*****@" + emailParts[1];
+            document.getElementById('profile-email-masked').innerText = masked;
+            document.getElementById('sidebar-email').innerText = masked;
+            
+            // Update avatar letter
+            const upperLetter = username.charAt(0).toUpperCase();
+            letterDisplay.innerText = upperLetter;
+            sidebarLetterDisplay.innerText = upperLetter;
+            
+            // Update profile picture if exists
+            if (loggedInUser.profilePic) {
+                imgDisplay.src = loggedInUser.profilePic;
+                imgDisplay.style.display = 'block';
+                letterDisplay.style.display = 'none';
+                
+                sidebarImgDisplay.src = loggedInUser.profilePic;
+                sidebarImgDisplay.style.display = 'block';
+                sidebarLetterDisplay.style.display = 'none';
+            } else {
+                imgDisplay.style.display = 'none';
+                letterDisplay.style.display = 'flex';
+                sidebarImgDisplay.style.display = 'none';
+                sidebarLetterDisplay.style.display = 'flex';
+            }
+
+            // Update inline edit form values
+            document.getElementById('edit-username-inline').value = username;
+            document.getElementById('edit-bio-inline').value = bio === "-" ? "" : bio;
+            document.getElementById('edit-gender-inline').value = gender === "-" ? "" : gender;
+            document.getElementById('edit-birthdate-inline').value = birthdate;
+            document.getElementById('edit-occupation-inline').value = occupation === "-" ? "" : occupation;
+            document.getElementById('edit-hobbies-inline').value = hobbies === "-" ? "" : hobbies;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return "-";
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function openInlineEdit() {
+            const editForm = document.getElementById('inline-edit-form');
+            const additionalInfo = document.getElementById('profile-additional-info');
+            const editBtnWrapper = document.querySelector('.profile-edit-btn-wrapper');
+            
+            additionalInfo.style.display = 'none';
+            editBtnWrapper.style.display = 'none';
+            editForm.style.display = 'block';
+            
+            editForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function closeInlineEdit() {
+            const editForm = document.getElementById('inline-edit-form');
+            const additionalInfo = document.getElementById('profile-additional-info');
+            const editBtnWrapper = document.querySelector('.profile-edit-btn-wrapper');
+            
+            editForm.style.display = 'none';
+            additionalInfo.style.display = 'block';
+            editBtnWrapper.style.display = 'block';
+            
+            document.getElementById('username-error').innerText = '';
+        }
+
+        async function saveInlineChanges() {
+            const newUsername = document.getElementById('edit-username-inline').value.trim();
+            const newBio = document.getElementById('edit-bio-inline').value.trim();
+            const newGender = document.getElementById('edit-gender-inline').value;
+            const newBirthdate = document.getElementById('edit-birthdate-inline').value;
+            const newOccupation = document.getElementById('edit-occupation-inline').value.trim();
+            const newHobbies = document.getElementById('edit-hobbies-inline').value.trim();
+            
+            if (!newUsername) {
+                document.getElementById('username-error').innerText = 'Username cannot be empty!';
+                return;
+            }
+            
+            if (newUsername.length < 3) {
+                document.getElementById('username-error').innerText = 'Username must be at least 3 characters!';
+                return;
+            }
+            
+            document.getElementById('username-error').innerText = '';
+            
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+            try {
+                const response = await fetch('/api/profile/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        username: newUsername,
+                        bio: newBio,
+                        gender: newGender,
+                        birthdate: newBirthdate,
+                        occupation: newOccupation,
+                        hobbies: newHobbies
+                    })
+                });
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    localStorage.setItem('currentUser', JSON.stringify(result.user));
+                    loadUserData();
+                    closeInlineEdit();
+                    showSuccessMessage('Profile updated successfully!');
+                } else {
+                    document.getElementById('username-error').innerText = result.message || 'Failed to update profile.';
+                }
+            } catch (e) {
+                console.error('Error updating profile:', e);
+                showSuccessMessage('Error updating profile. Please try again.');
+            }
+        }
+        
+        function showSuccessMessage(message) {
+            const successMsg = document.createElement('div');
+            successMsg.className = 'success-toast';
+            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> ' + message;
+            successMsg.style.cssText = 'position:fixed; bottom:20px; right:20px; background:#4CAF50; color:white; padding:12px 20px; border-radius:10px; z-index:10000; animation:fadeInOut 2s ease; box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+            document.body.appendChild(successMsg);
+            setTimeout(() => successMsg.remove(), 2000);
+        }
+        
+        function handleFileSelect(file) {
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imageToCrop.src = e.target.result;
+                    cropModal.style.display = 'flex';
+                    
+                    if(cropper) cropper.destroy();
+                    
+                    setTimeout(() => {
+                        cropper = new Cropper(imageToCrop, {
+                            aspectRatio: 1,
+                            viewMode: 1,
+                            dragMode: 'move',
+                            responsive: true,
+                            restore: false,
+                            zoomable: true,
+                            zoomOnWheel: true
+                        });
+                    }, 150);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        inputFile.onchange = function(e) {
+            handleFileSelect(e.target.files[0]);
+            currentFileInput = inputFile;
+        }
+        
+        inputFileSidebar.onchange = function(e) {
+            handleFileSelect(e.target.files[0]);
+            currentFileInput = inputFileSidebar;
+        }
+        
+        async function saveCroppedImage() {
+            if (!cropper) return;
+            const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+            const dataUrl = canvas.toDataURL('image/jpeg');
+            
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            try {
+                const response = await fetch('/api/profile/avatar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        profile_pic: dataUrl
+                    })
+                });
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    if (loggedInUser) {
+                        loggedInUser.profilePic = dataUrl;
+                        localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
+                    }
+                    
+                    imgDisplay.src = dataUrl;
+                    imgDisplay.style.display = 'block';
+                    letterDisplay.style.display = 'none';
+                    
+                    sidebarImgDisplay.src = dataUrl;
+                    sidebarImgDisplay.style.display = 'block';
+                    sidebarLetterDisplay.style.display = 'none';
+                    
+                    closeCropModal();
+                    showSuccessMessage('Profile photo updated successfully!');
+                } else {
+                    alert(result.message || 'Failed to update photo.');
+                }
+            } catch (e) {
+                console.error('Error updating photo:', e);
+                showSuccessMessage('Error updating profile photo. Please try again.');
+            }
+        }
+        
+        function closeCropModal() {
+            cropModal.style.display = 'none';
+            if(cropper) cropper.destroy();
+            if (currentFileInput) {
+                currentFileInput.value = "";
+                currentFileInput = null;
+            }
+        }
+        
+        function loadNewsHistory() {
+            const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!loggedInUser) return;
+            
+            // History per user (gunakan key unik per user)
+            const historyKey = 'newsHistory_' + loggedInUser.id;
+            const history = JSON.parse(localStorage.getItem(historyKey)) || [];
+            const historyList = document.getElementById('news-history-list');
+            
+            if (history.length > 0) {
+                historyList.innerHTML = '';
+                history.slice(0, 5).forEach(item => {
+                    const category = item.category || 'News';
+                    const readTime = item.timeRead || 'Just now';
+                    
+                    historyList.innerHTML += `
+                        <div class="history-news-item" onclick="location.href='/detail?id=${encodeURIComponent(item.id)}'" style="cursor: pointer;">
+                            <img src="${item.thumbnail || 'https://via.placeholder.com/65'}" alt="thumbnail">
+                            <div class="history-item-details">
+                                <h4>${item.title || 'News'}</h4>
+                                <div class="history-meta-tags">
+                                    <span class="history-category">${category}</span>
+                                    <span class="history-time"><i class="far fa-clock"></i> ${readTime}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                historyList.innerHTML = '<p class="empty-status">No reading history yet.</p>';
+            }
+        }
+
+        async function loadSavedArticles() {
+            const savedList = document.getElementById('saved-news-list');
+            if (!savedList) return;
+
+            try {
+                const response = await fetch('/api/bookmarks');
+                const data = await response.json();
+                
+                if (data.success && data.bookmarks && data.bookmarks.length > 0) {
+                    savedList.innerHTML = '';
+                    data.bookmarks.forEach(item => {
+                        const category = item.category || 'News';
+                        const savedAt = item.saved_at ? new Date(item.saved_at).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recently';
+                        
+                        savedList.innerHTML += `
+                            <div class="history-news-item" style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; box-sizing: border-box;">
+                                <div onclick="location.href='/detail?id=${encodeURIComponent(item.article_id)}'" style="cursor: pointer; display: flex; align-items: center; gap: 15px; flex: 1;">
+                                    <img src="${item.thumbnail || 'https://via.placeholder.com/65'}" alt="thumbnail" style="width: 65px; height: 65px; object-fit: cover; border-radius: 12px;">
+                                    <div class="history-item-details">
+                                        <h4>${item.title || 'News'}</h4>
+                                        <div class="history-meta-tags">
+                                            <span class="history-category">${category}</span>
+                                            <span class="history-time"><i class="far fa-calendar"></i> ${savedAt}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button onclick="removeSavedArticle(event, '${item.article_id}', '${item.title.replace(/'/g, "\\'")}')" style="background: none; border: none; color: #ed5858; cursor: pointer; font-size: 16px; padding: 10px; transition: color 0.2s;" title="Remove">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        `;
+                    });
+                } else {
+                    savedList.innerHTML = '<p class="empty-status">No saved articles yet.</p>';
+                }
+            } catch (err) {
+                console.error('Failed to load bookmarks:', err);
+                savedList.innerHTML = '<p class="empty-status">Failed to load saved articles.</p>';
+            }
+        }
+
+        async function removeSavedArticle(event, articleId, title) {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to remove this article from saved?')) {
+                try {
+                    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+                    const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
+
+                    const response = await fetch('/api/bookmarks/toggle', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({
+                            article_id: articleId,
+                            title: title
+                        })
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        loadSavedArticles();
+                        showSuccessMessage('Article removed from saved.');
+                    } else {
+                        showSuccessMessage('Failed to remove article.');
+                    }
+                } catch (err) {
+                    console.error('Failed to remove bookmark:', err);
+                }
+            }
+        }
+        
+        function togglePopup(id) {
+            const popup = document.getElementById(id);
+            if (popup.style.display === 'flex') {
+                popup.style.display = 'none';
+            } else {
+                popup.style.display = 'flex';
+            }
+        }
+        
+        // ==================== LOGOUT BERSIH ====================
+        function logoutUser() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/logout';
+            }
+        }
+
+        // ==================== NOTIFICATION SETTINGS ====================
+        function loadNotificationSettings() {
+            const settings = JSON.parse(localStorage.getItem('notificationSettings')) || {
+                breaking: true,
+                favorite: true,
+                comment: true,
+                system: true,
+                email: false,
+                daily: true
+            };
+            
+            const notifBreaking = document.getElementById('notif-breaking');
+            const notifFavorite = document.getElementById('notif-favorite');
+            const notifComment = document.getElementById('notif-comment');
+            const notifSystem = document.getElementById('notif-system');
+            const notifEmail = document.getElementById('notif-email');
+            const notifDaily = document.getElementById('notif-daily');
+            
+            if (notifBreaking) notifBreaking.checked = settings.breaking;
+            if (notifFavorite) notifFavorite.checked = settings.favorite;
+            if (notifComment) notifComment.checked = settings.comment;
+            if (notifSystem) notifSystem.checked = settings.system;
+            if (notifEmail) notifEmail.checked = settings.email;
+            if (notifDaily) notifDaily.checked = settings.daily;
+        }
+
+        function saveNotificationSettings() {
+            const settings = {
+                breaking: document.getElementById('notif-breaking')?.checked || false,
+                favorite: document.getElementById('notif-favorite')?.checked || false,
+                comment: document.getElementById('notif-comment')?.checked || false,
+                system: document.getElementById('notif-system')?.checked || false,
+                email: document.getElementById('notif-email')?.checked || false,
+                daily: document.getElementById('notif-daily')?.checked || false
+            };
+            localStorage.setItem('notificationSettings', JSON.stringify(settings));
+        }
+
+        function initNotificationToggles() {
+            const toggles = ['notif-breaking', 'notif-favorite', 'notif-comment', 'notif-system', 'notif-email', 'notif-daily'];
+            toggles.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('change', saveNotificationSettings);
+                }
+            });
+        }
+
+        // ==================== SETTINGS FUNCTIONS ====================
+        // Perbaikan: Ganti function loadSettings agar tidak menabrak class dan background custom
+        function loadSettings() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const fontSize = localStorage.getItem('fontSize') || 'medium';
+            const language = localStorage.getItem('language') || 'en';
+            const autoplay = localStorage.getItem('autoplay') !== 'false';
+            const loadImages = localStorage.getItem('loadImages') !== 'false';
+            const saveProgress = localStorage.getItem('saveProgress') !== 'false';
+            const dataSaver = localStorage.getItem('dataSaver') === 'true';
+            
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const fontSizeValue = document.getElementById('font-size-value');
+            const languageSelect = document.getElementById('language-select');
+            const autoplayToggle = document.getElementById('autoplay-toggle');
+            const loadImagesToggle = document.getElementById('load-images-toggle');
+            const saveProgressToggle = document.getElementById('save-progress-toggle');
+            const dataSaverToggle = document.getElementById('data-saver-toggle');
+            
+            if (darkModeToggle) darkModeToggle.checked = darkMode;
+            if (languageSelect) languageSelect.value = language;
+            if (autoplayToggle) autoplayToggle.checked = autoplay;
+            if (loadImagesToggle) loadImagesToggle.checked = loadImages;
+            if (saveProgressToggle) saveProgressToggle.checked = saveProgress;
+            if (dataSaverToggle) dataSaverToggle.checked = dataSaver;
+            
+            if (fontSizeValue) {
+                const sizeText = { small: 'Small', medium: 'Medium', large: 'Large', xlarge: 'Extra Large' };
+                fontSizeValue.innerText = sizeText[fontSize] || 'Medium';
+            }
+            
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            
+            applyFontSize(fontSize);
+        }
+
+        function applyFontSize(size) {
+            const sizes = { small: '16px', medium: '18px', large: '21px', xlarge: '24px' };
+            document.documentElement.style.fontSize = sizes[size] || '18px';
+        }
+
+        function decreaseFontSize() {
+            const sizes = ['small', 'medium', 'large', 'xlarge'];
+            const current = localStorage.getItem('fontSize') || 'medium';
+            const currentIndex = sizes.indexOf(current);
+            if (currentIndex > 0) {
+                const newSize = sizes[currentIndex - 1];
+                localStorage.setItem('fontSize', newSize);
+                applyFontSize(newSize);
+                const sizeText = { small: 'Small', medium: 'Medium', large: 'Large', xlarge: 'Extra Large' };
+                document.getElementById('font-size-value').innerText = sizeText[newSize];
+                showSuccessMessage(`Font size changed to ${sizeText[newSize]}`);
+            }
+        }
+
+        // Perbaikan: Ganti increment fontSize agar tidak error saat di click berulang
+        function increaseFontSize() {
+            const sizes = ['small', 'medium', 'large', 'xlarge'];
+            const current = localStorage.getItem('fontSize') || 'medium';
+            const currentIndex = sizes.indexOf(current);
+            if (currentIndex < sizes.length - 1) {
+                const newSize = sizes[currentIndex + 1];
+                localStorage.setItem('fontSize', newSize);
+                applyFontSize(newSize);
+                const sizeText = { small: 'Small', medium: 'Medium', large: 'Large', xlarge: 'Extra Large' };
+                document.getElementById('font-size-value').innerText = sizeText[newSize];
+                showSuccessMessage(`Font size changed to ${sizeText[newSize]}`);
+            }
+        }
+
+        function openCategoryModal() {
+            const modal = document.getElementById('category-modal');
+            const saved = JSON.parse(localStorage.getItem('preferredCategories')) || [];
+            categories.forEach(cat => {
+                const cb = document.getElementById(`cat-${cat.id}`);
+                if (cb) cb.checked = saved.includes(cat.name);
+            });
+            modal.style.display = 'flex';
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('category-modal').style.display = 'none';
+        }
+
+        function saveCategories() {
+            const selected = [];
+            categories.forEach(cat => {
+                const cb = document.getElementById(`cat-${cat.id}`);
+                if (cb && cb.checked) selected.push(cat.name);
+            });
+            localStorage.setItem('preferredCategories', JSON.stringify(selected));
+            closeCategoryModal();
+            showSuccessMessage('Categories saved!');
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all reading history?')) {
+                const loggedInUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (loggedInUser && loggedInUser.id) {
+                    localStorage.removeItem('newsHistory_' + loggedInUser.id);
+                }
+                loadNewsHistory();
+                showSuccessMessage('Reading history cleared!');
+            }
+        }
+
+        function clearSearchHistory() {
+            if (confirm('Are you sure you want to clear all search history?')) {
+                localStorage.removeItem('searchHistory');
+                document.getElementById('search-history-list').innerHTML = '<p class="empty-status">No search history yet.</p>';
+                showSuccessMessage('Search history cleared!');
+            }
+        }
+
+        function deleteAccount() {
+            document.getElementById('delete-confirm-input').value = '';
+            document.getElementById('delete-error-msg').innerText = '';
+            document.getElementById('delete-confirm-modal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-confirm-modal').style.display = 'none';
+        }
+
+        async function submitDeleteAccount() {
+            const text = document.getElementById('delete-confirm-input').value.trim();
+            if (text !== 'DELETE') {
+                document.getElementById('delete-error-msg').innerText = 'Teks konfirmasi salah!';
+                return;
+            }
+            
+            document.getElementById('delete-error-msg').innerText = '';
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            try {
+                const response = await fetch('/api/account/delete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                const result = await response.json();
+                if (response.status === 200 || result.status === 'success') {
+                    closeDeleteModal();
+                    
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('user_token');
+                    if (currentUser && currentUser.id) {
+                        localStorage.removeItem('newsHistory_' + currentUser.id);
+                    }
+                    localStorage.removeItem('searchHistory');
+                    localStorage.removeItem('notificationSettings');
+                    localStorage.removeItem('preferredCategories');
+                    
+                    showAlert("Akun Anda berhasil dihapus!", "success");
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    closeDeleteModal();
+                    showAlert(result.message || 'Gagal menghapus akun.');
+                }
+            } catch (e) {
+                console.error('Error deleting account:', e);
+                closeDeleteModal();
+                showAlert('Gagal menghapus akun. Silakan coba lagi.');
+            }
+        }
+
+        function rateApp() {
+            showSuccessMessage('Thank you for rating! ⭐⭐⭐⭐⭐');
+        }
+
+        function helpCenter() {
+            showSuccessMessage('Help Center - Contact support@GafextaNews.com');
+        }
+
+        function openTerms() {
+            showSuccessMessage('Terms & Privacy - Visit our website for more info');
+        }
+
+        // Event listeners for settings toggles
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
+            loadNewsHistory();
+            loadNotificationSettings();
+            initNotificationToggles();
+            loadSettings();
+            
+            // Dark mode toggle
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('change', function() {
+                    localStorage.setItem('darkMode', this.checked);
+                    if (this.checked) {
+                        document.body.classList.add('dark-mode');
+                        showSuccessMessage('Dark mode enabled');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                        showSuccessMessage('Light mode enabled');
+                    }
+                });
+            }
+            
+            // Language select
+            const languageSelect = document.getElementById('language-select');
+            if (languageSelect) {
+                languageSelect.addEventListener('change', function() {
+                    localStorage.setItem('language', this.value);
+                    if (typeof applyGlobalLanguage === 'function') {
+                        applyGlobalLanguage();
+                    }
+                    showSuccessMessage('Language changed successfully!');
+                });
+            }
+            
+            // Auto-play toggle
+            const autoplayToggle = document.getElementById('autoplay-toggle');
+            if (autoplayToggle) {
+                autoplayToggle.addEventListener('change', function() {
+                    localStorage.setItem('autoplay', this.checked);
+                });
+            }
+            
+            // Load images toggle
+            const loadImagesToggle = document.getElementById('load-images-toggle');
+            if (loadImagesToggle) {
+                loadImagesToggle.addEventListener('change', function() {
+                    localStorage.setItem('loadImages', this.checked);
+                });
+            }
+            
+            // Save progress toggle
+            const saveProgressToggle = document.getElementById('save-progress-toggle');
+            if (saveProgressToggle) {
+                saveProgressToggle.addEventListener('change', function() {
+                    localStorage.setItem('saveProgress', this.checked);
+                });
+            }
+            
+            // Data saver toggle
+            const dataSaverToggle = document.getElementById('data-saver-toggle');
+            if (dataSaverToggle) {
+                dataSaverToggle.addEventListener('change', function() {
+                    localStorage.setItem('dataSaver', this.checked);
+                    showSuccessMessage(this.checked ? 'Data saver mode enabled' : 'Data saver mode disabled');
+                });
+            }
+            
+            cropModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCropModal();
+                }
+            });
+
+            const deleteConfirmModal = document.getElementById('delete-confirm-modal');
+            if (deleteConfirmModal) {
+                deleteConfirmModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeDeleteModal();
+                    }
+                });
+            }
+            
+            // Close category modal when clicking outside
+            const categoryModal = document.getElementById('category-modal');
+            if (categoryModal) {
+                categoryModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeCategoryModal();
+                    }
+                });
+            }
+        });
+    </script>
+    <x-alert />
+    <script>
+        @auth
+            localStorage.setItem('currentUser', JSON.stringify({
+                id: {{ Auth::user()->id }},
+                username: {!! json_encode(Auth::user()->username) !!},
+                email: {!! json_encode(Auth::user()->email) !!},
+                is_verified: {{ Auth::user()->is_verified ? 1 : 0 }},
+                bio: {!! json_encode(Auth::user()->bio ?? '-') !!},
+                gender: {!! json_encode(Auth::user()->gender ?? '-') !!},
+                birthdate: {!! json_encode(Auth::user()->birthdate ?? '') !!},
+                occupation: {!! json_encode(Auth::user()->occupation ?? '-') !!},
+                hobbies: {!! json_encode(Auth::user()->hobbies ?? '-') !!},
+                profilePic: {!! json_encode(Auth::user()->profile_pic) !!},
+                joinDate: {!! json_encode(Auth::user()->created_at ? Auth::user()->created_at->format('F d, Y') : '-') !!}
+            }));
+            localStorage.setItem('user_token', 'logged_in');
+        @else
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('user_token');
+        @endauth
+    </script>
+    <script src="{{ asset('assets/js/global-news.js') }}"></script>
+</body>
+</html>

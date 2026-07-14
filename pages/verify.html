@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Your Account - GafextaNews</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/verify.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <div id="alert-modal">
-        <div class="alert-content">
-            <i class="fas fa-info-circle alert-icon"></i>
-            <span id="alert-message"></span>
+    <!-- Alert Modal -->
+    <div id="customAlert" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <div class="modal-icon-alert"><i class="fas fa-exclamation-circle"></i></div>
+            <p id="alertMessage" class="modal-text"></p>
+            <button onclick="closeAlert()" class="modal-btn-primary">OK</button>
         </div>
     </div>
 
@@ -43,21 +46,18 @@
 
     <script>
         const inputs = document.querySelectorAll('.otp-inputs input');
-        const alertModal = document.getElementById('alert-modal');
-        const alertMsg = document.getElementById('alert-message');
 
-        // Fungsi Show Alert Profesional (Auto Hide)
+        function closeAlert() {
+            document.getElementById('customAlert').style.display = 'none';
+        }
+
+        function showAlert(message) {
+            document.getElementById('alertMessage').innerText = message;
+            document.getElementById('customAlert').style.display = 'flex';
+        }
+
         function showToast(message) {
-            alertMsg.innerText = message;
-            alertModal.style.display = 'flex';
-            
-            setTimeout(() => {
-                alertModal.style.animation = 'slideOut 0.5s forwards';
-                setTimeout(() => {
-                    alertModal.style.display = 'none';
-                    alertModal.style.animation = 'slideIn 0.5s ease-out';
-                }, 500);
-            }, 4000);
+            showAlert(message);
         }
 
         // Logic Input OTP (Auto Focus)
@@ -85,11 +85,9 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'success') {
-                    // AUTO LOGIN: Simpan data user ke localStorage
-                    localStorage.setItem('currentUser', JSON.stringify(data.user));
-                    
-                    showToast("Verifikasi Berhasil! Mengalihkan...");
-                    setTimeout(() => window.location.href = '../index.html', 2000);
+                    // Berhasil! Alihkan ke laman login (BUKAN langsung dashboard)
+                    showToast("Verifikasi Berhasil! Mengalihkan ke laman login...");
+                    setTimeout(() => window.location.href = 'login.html', 2000);
                 } else {
                     showToast(data.message);
                 }

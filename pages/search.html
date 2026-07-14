@@ -28,14 +28,12 @@
                 <a href="category.html?cat=lifestyle">Lifestyle</a>
             </nav>
             <div class="search-profile">
-                <!-- Search Box sama persis dashboard -->
                 <div class="search-wrapper" id="search-wrapper">
-                    <div class="search-input-wrapper">
-                        <i class="fas fa-magnifying-glass search-icon"></i>
-                        <input type="text" id="search-input" placeholder="Search news..." autocomplete="off">
-                    </div>
-                    <!-- Auto-complete dropdown -->
-                    <div id="search-dropdown" class="search-dropdown"></div>
+                    <input type="text" id="search-input" placeholder="Search news..." autocomplete="off">
+                    <button type="button" class="search-btn" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <div class="search-autocomplete" id="search-autocomplete"></div>
                 </div>
                 <a href="profile.html" class="profile-link">
                     <i class="fas fa-user-circle"></i> Profile
@@ -45,7 +43,6 @@
     </header>
 
     <main class="container">
-        <!-- Search Header dengan Info & Filter -->
         <div class="search-info-bar" id="search-info-bar">
             <div>
                 <h2 class="search-header-text">
@@ -55,7 +52,6 @@
             </div>
         </div>
 
-        <!-- Filter Chips -->
         <div class="search-filters">
             <button class="filter-chip active" data-filter="all">
                 <i class="fas fa-check"></i> All
@@ -71,12 +67,10 @@
             </button>
         </div>
 
-        <!-- Headline Container -->
         <div id="search-headline-container">
             <div class="loading">Searching for top match...</div>
         </div>
 
-        <!-- List Articles -->
         <div class="latest-articles">
             <h3 class="more-articles-label">MORE ARTICLES</h3>
             <div id="search-results-grid" class="search-results-grid">
@@ -84,6 +78,8 @@
             </div>
         </div>
     </main>
+
+    <div id="category-toast" class="category-toast" style="position: fixed; bottom: 20px; right: 20px; background: #000; color: #fff; padding: 12px 20px; border: 2px solid #fff; border-radius: 4px; box-shadow: 4px 4px 0px #ff5e5e; z-index: 1000; opacity: 0; transform: translateY(16px); transition: all 0.3s ease; pointer-events: none;"></div>
 
     <footer>
         <div class="footer-content">
@@ -116,6 +112,7 @@
         <p class="copyright">&copy; 2026 Gafexta News. All Rights Reserved.</p>
     </footer>
 
+    <script src="../assets/js/global-news.js"></script>
     <script src="../assets/js/search.js"></script>
 </body>
 </html>

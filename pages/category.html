@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/category.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<base target="_blank">
+    <!-- PERBAIKAN 1: Menghapus <base target="_blank"> agar navigasi internal navbar dan search tidak membuka tab baru terus-menerus -->
 </head>
 <body>
     <header>
@@ -28,7 +28,6 @@
                 <a href="category.html?cat=lifestyle" class="nav-link">Lifestyle</a>
             </nav>
             <div class="search-profile">
-                <!-- PERBAIKAN: Search dengan autocomplete -->
                 <div class="search-wrapper" id="search-wrapper">
                     <input type="text" id="search-input" placeholder="Search news..." autocomplete="off">
                     <button type="button" class="search-btn" id="search-btn">
@@ -44,7 +43,6 @@
     </header>
 
     <main class="container">
-        <!-- PERBAIKAN: Category Hero Header dengan ikon, info, dan sort -->
         <section class="category-header">
             <div class="category-header-left">
                 <div class="category-icon" id="category-hero-icon">
@@ -57,7 +55,7 @@
                     </div>
                 </div>
             </div>
-            <!-- PERBAIKAN: Sort dropdown yang functional -->
+            
             <div class="category-sort-wrapper">
                 <button class="category-sort-btn" onclick="toggleSort()">
                     <i class="fas fa-sliders-h"></i>
@@ -80,6 +78,9 @@
 
         <div id="category-sliders-container" class="main-grid-wrapper"></div>
     </main>
+
+    <!-- PERBAIKAN 2: Menyediakan elemen container Toast secara statis agar fungsi alert popup/toast dari global-news.js bisa muncul di layar -->
+    <div id="category-toast" class="category-toast" style="position: fixed; bottom: 20px; right: 20px; background: #000; color: #fff; padding: 12px 20px; border: 2px solid #fff; border-radius: 4px; box-shadow: 4px 4px 0px #ff5e5e; z-index: 1000; opacity: 0; transform: translateY(16px); transition: all 0.3s ease; pointer-events: none;"></div>
 
     <footer>
         <div class="footer-content">
@@ -112,6 +113,8 @@
         <p class="copyright">&copy; 2026 Gafexta News. All Rights Reserved.</p>
     </footer>
 
+    <!-- PERBAIKAN 3: Pengurutan script penunjang global dipanggil duluan sebelum logika halaman category -->
+    <script src="../assets/js/global-news.js"></script>
     <script src="../assets/js/category.js"></script>
 </body>
 </html>

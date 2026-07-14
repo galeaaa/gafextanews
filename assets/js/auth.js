@@ -1,9 +1,45 @@
 // --- FUNGSI NOTIFIKASI ---
-function showAlert(message) {
+function showAlert(message, type = 'error') {
     const alertBox = document.getElementById('customAlert');
     const alertMsg = document.getElementById('alertMessage');
+    const alertIconContainer = document.getElementById('alertIconContainer');
+    const alertIcon = document.getElementById('alertIcon');
+    const alertTitle = document.getElementById('alertTitle');
+    const alertBtn = document.getElementById('alertBtn');
+    
     if (alertBox && alertMsg) {
         alertMsg.innerText = message;
+        
+        if (type === 'success') {
+            alertTitle.innerText = "Sukses";
+            if (alertIconContainer) {
+                alertIconContainer.className = "modal-icon-success";
+                alertIconContainer.removeAttribute('style');
+            }
+            if (alertIcon) {
+                alertIcon.className = "fas fa-check-circle";
+                alertIcon.removeAttribute('style');
+            }
+            if (alertBtn) {
+                alertBtn.className = "modal-btn-success";
+                alertBtn.removeAttribute('style');
+            }
+        } else {
+            alertTitle.innerText = "Gagal";
+            if (alertIconContainer) {
+                alertIconContainer.className = "modal-icon-alert";
+                alertIconContainer.removeAttribute('style');
+            }
+            if (alertIcon) {
+                alertIcon.className = "fas fa-exclamation-circle";
+                alertIcon.removeAttribute('style');
+            }
+            if (alertBtn) {
+                alertBtn.className = "modal-btn-primary";
+                alertBtn.removeAttribute('style');
+            }
+        }
+        
         alertBox.style.display = 'flex';
     }
 }

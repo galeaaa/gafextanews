@@ -41,6 +41,9 @@
                     <div class="menu-link" onclick="switchSection('history-section', this)">
                         <i class="fas fa-book-open"></i> Reading History
                     </div>
+                    <div class="menu-link" onclick="switchSection('saved-news-section', this)">
+                        <i class="fas fa-bookmark"></i> Saved News
+                    </div>
                     <div class="menu-link" onclick="switchSection('notifications-section', this)">
                         <i class="fas fa-bell"></i> Notifications
                     </div>
@@ -188,6 +191,17 @@
                             <div class="section-title-btn"><i class="fas fa-search"></i> Recent Search History</div>
                             <div id="search-history-list" class="mini-list">
                                 <p class="empty-status">No search history yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="saved-news-section" class="content-section">
+                    <div class="profile-menu-grid" style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="glass-card full-width">
+                            <div class="section-title-btn"><i class="fas fa-bookmark"></i> Saved Articles</div>
+                            <div id="saved-news-list" class="mini-list">
+                                <p class="empty-status">No saved articles yet.</p>
                             </div>
                         </div>
                     </div>
@@ -911,6 +925,51 @@
                 historyList.innerHTML = '<p class="empty-status">No reading history yet.</p>';
             }
         }
+
+        function loadSavedArticles() {
+            const bookmarks = JSON.parse(localStorage.getItem('bookmarkedArticles')) || [];
+            const savedList = document.getElementById('saved-news-list');
+            if (!savedList) return;
+
+            if (bookmarks.length > 0) {
+                savedList.innerHTML = '';
+                bookmarks.forEach(item => {
+                    const category = item.category || 'News';
+                    const savedAt = item.savedAt || 'Recently';
+                    
+                    savedList.innerHTML += `
+                        <div class="history-news-item" style="position: relative; display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; box-sizing: border-box;">
+                            <div onclick="location.href='detail.html?id=${encodeURIComponent(item.id)}'" style="cursor: pointer; display: flex; align-items: center; gap: 15px; flex: 1;">
+                                <img src="${item.thumbnail || 'https://via.placeholder.com/65'}" alt="thumbnail" style="width: 65px; height: 65px; object-fit: cover; border-radius: 12px;">
+                                <div class="history-item-details">
+                                    <h4>${item.title || 'News'}</h4>
+                                    <div class="history-meta-tags">
+                                        <span class="history-category">${category}</span>
+                                        <span class="history-time"><i class="far fa-calendar"></i> ${savedAt}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="removeSavedArticle(event, '${item.id}')" style="background: none; border: none; color: #ed5858; cursor: pointer; font-size: 16px; padding: 10px; transition: color 0.2s;" title="Remove">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+            } else {
+                savedList.innerHTML = '<p class="empty-status">No saved articles yet.</p>';
+            }
+        }
+
+        function removeSavedArticle(event, articleId) {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to remove this article from saved?')) {
+                let bookmarks = JSON.parse(localStorage.getItem('bookmarkedArticles')) || [];
+                bookmarks = bookmarks.filter(b => b.id !== articleId);
+                localStorage.setItem('bookmarkedArticles', JSON.stringify(bookmarks));
+                loadSavedArticles();
+                showSuccessMessage('Article removed from saved.');
+            }
+        }
         
         function togglePopup(id) {
             const popup = document.getElementById(id);
@@ -1024,8 +1083,8 @@
         }
 
         function applyFontSize(size) {
-            const sizes = { small: '14px', medium: '16px', large: '18px', xlarge: '20px' };
-            document.documentElement.style.fontSize = sizes[size] || '16px';
+            const sizes = { small: '16px', medium: '18px', large: '21px', xlarge: '24px' };
+            document.documentElement.style.fontSize = sizes[size] || '18px';
         }
 
         function decreaseFontSize() {
